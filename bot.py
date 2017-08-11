@@ -7,6 +7,9 @@ from io import StringIO
 from datetime import datetime
 from discord import Game, InvalidArgument, HTTPException
 import lyricfetcher
+import translate
+from translate import Translator
+
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
 prefix = '!'
@@ -48,6 +51,12 @@ async def lyrics(ctx,args):
     else: await client.say('```' + lyrics + '```')
 
 # Translator
+@client.command(pass_context=True)
+async def trans(ctx,args):
+    arr = '{}'.format(args).split('->')
+    t = Translator(from_lang=arr[0],to_lang=arr[1])
+    answer = t.translate(args[1])
+    await client.say('```' + answer + '```')
 
 # COIN FLIP
 @client.command(pass_context=True)
@@ -55,11 +64,6 @@ async def coinflip(ctx):
     if random.randint(0, 1):
         await client.say('Heads')
     else: await client.say('Tails')
-
-# INPUT OF INFORMATION EXAMPLE
-# @client.command(pass_context=True)
-# async def test(ctx,args):
-#     await client.say('Your text was: {}'.format(args))
 
 @client.command()
 async def joined(member : discord.Member):
@@ -131,3 +135,10 @@ async def moomin(ctx):
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
 #################################################################################
+
+# Notes
+
+# INPUT OF INFORMATION EXAMPLE
+# @client.command(pass_context=True)
+# async def test(ctx,args):
+#     await client.say('Your text was: {}'.format(args))
