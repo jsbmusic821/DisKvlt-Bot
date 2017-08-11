@@ -21,6 +21,6 @@ async def ping(ctx):
 async def coinflip(ctx):
     if random.randint(1) == 0:
         await client.say('Heads')
-    else: await.client.say('Tails')
+    else: await client.say('Tails')
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
