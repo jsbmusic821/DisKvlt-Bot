@@ -34,4 +34,14 @@ async def test(ctx,args):
 async def babooshka(ctx):
     await client.say('https://www.youtube.com/watch?v=6xckBwPdo1c')
 
+# Hard-coded Where there's a whip, there's a way
+@client.command(pass_context=True)
+async def whip(ctx):
+    await client.say('https://www.youtube.com/watch?v=YdXQJS3Yv0Y')
+
+# Hard-coded Moomin Theme Song
+@client.command(pass_context=True)
+async def moomin(ctx):
+    await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
+
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
