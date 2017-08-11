@@ -16,7 +16,7 @@ client = commands.Bot(description=des, command_prefix=prefix);
 
 @client.event
 async def on_ready():
-    print("Bot is starting...")
+    print("~~~~~~~ Bot is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
 
