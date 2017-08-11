@@ -44,4 +44,9 @@ async def whip(ctx):
 async def moomin(ctx):
     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
 
+# Wiki command
+@client.command(pass_context=True)
+async def wiki(ctx,args):
+    await client.say('https://en.wikipedia.org/wiki/{}'.format(args))
+
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
