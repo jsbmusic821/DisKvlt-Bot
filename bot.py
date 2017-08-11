@@ -34,7 +34,6 @@ async def on_member_join(member):
 @client.command(pass_context=True)
 async def ping(ctx):
     await client.say('pong')
-    await client.send_message(server,asdfsadf)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
