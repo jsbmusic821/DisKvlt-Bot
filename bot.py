@@ -8,9 +8,9 @@ import os
 from io import StringIO
 from datetime import datetime
 from discord import Game, InvalidArgument, HTTPException
+import lyricfetcher
 
-
-des = "Hi I'm /r/TapeKvlt's bot! Beep, bop, boop..."
+des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
 prefix = '!'
 client = commands.Bot(description=des, command_prefix=prefix);
 
@@ -39,6 +39,12 @@ async def ping(ctx):
 async def pong(ctx):
     await client.say('Hey, stop that.')
 ###################################################################
+
+# LYRIC FETCHER
+@client.command(pass_context=True)
+async def lyrics(ctx):
+    arr = '{}'.format(args).split(' - ')
+    print(lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1]))
 
 # COIN FLIP
 @client.command(pass_context=True)
