@@ -69,6 +69,7 @@ async def metal(ctx,args):
     temp = "";
     for i in args:
         temp += i
+        print 'something'
     temp = temp.format(args.replace(' ', '+'))
     #temp = '{}'.format(args.replace(' ', '+'))
     await client.say('https://www.metal-archives.com/search?searchString=' + temp + '&type=band_name'.format(args))
