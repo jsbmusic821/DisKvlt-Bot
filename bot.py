@@ -3,8 +3,6 @@ from discord.ext import commands
 import logging
 import asyncio
 import random
-import sys
-import os
 from io import StringIO
 from datetime import datetime
 from discord import Game, InvalidArgument, HTTPException
@@ -48,6 +46,8 @@ async def lyrics(ctx,args):
     if lyrics is None or lyrics == 404 or lyrics == '404':
         await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`')
     else: await client.say('```' + lyrics + '```')
+
+# Translator
 
 # COIN FLIP
 @client.command(pass_context=True)

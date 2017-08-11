@@ -1,6 +1,9 @@
 # TapeKvlt-Discord-Bot
 The official code repository for /r/TapeKvlt's Discord bot
 
+# Dependencies
+
+`pip3 install discord.py bs4 cchardet aiohttp async asyncio datetime lyricfetcher websockets`
 
 made using discord.py:
 
