@@ -29,12 +29,22 @@ async def coinflip(ctx):
 async def test(ctx,args):
     await client.say('Your text was: {}'.format(args))
 
+#################### WEBSITE SEARCHERS #################################
 # Wiki command
 @client.command(pass_context=True)
 async def wiki(ctx,args):
     await client.say('https://en.wikipedia.org/wiki/{}'.format(args))
 
-########################################################################
+# Metal Archives command
+@client.command(pass_context=True)
+async def metal(ctx,args):
+    await client.say('https://www.metal-archives.com/search?searchString={}&type=band_name
+{}'.format(args))
+
+##################### END WEBSITE SEARCHERS #############################
+
+
+#################### HARD CODINGS #################################
 # Hard-coded Babooshka
 @client.command(pass_context=True)
 async def babooshka(ctx):
@@ -49,7 +59,7 @@ async def whip(ctx):
 @client.command(pass_context=True)
 async def moomin(ctx):
     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
-########################################################################
+##################### END HARD CODINGS #############################
 
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
