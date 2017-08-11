@@ -48,7 +48,7 @@ async def lyrics(ctx):
 
 # COIN FLIP
 @client.command(pass_context=True)
-async def coinflip(ctx):
+async def coinflip(ctx,args):
     if random.randint(0, 1):
         await client.say('Heads')
     else: await client.say('Tails')
