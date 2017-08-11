@@ -66,8 +66,9 @@ async def wiki(ctx,args):
 # Metal Archives command
 @client.command(pass_context=True)
 async def metal(ctx,args):
-    a = args(0)
-    b = args(1)
+    temp = "";
+    for i in args:
+        temp += i
     temp = '{}'.format(args.replace(' ', '+'))
     await client.say('https://www.metal-archives.com/search?searchString=' + temp + '&type=band_name'.format(args))
 
