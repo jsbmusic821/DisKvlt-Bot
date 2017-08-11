@@ -10,7 +10,7 @@ from datetime import datetime
 from discord import Game, InvalidArgument, HTTPException
 
 
-des = 'This is the description inside my code file!'
+des = "Hi I'm /r/TapeKvlt's bot! Beep, bop, boop..."
 prefix = '!'
 client = commands.Bot(description=des, command_prefix=prefix);
 
