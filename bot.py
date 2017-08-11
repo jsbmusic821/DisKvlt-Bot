@@ -42,13 +42,13 @@ async def pong(ctx):
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
-async def lyrics(ctx):
+async def lyrics(ctx,args):
     arr = '{}'.format(args).split(' - ')
     print(lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1]))
 
 # COIN FLIP
 @client.command(pass_context=True)
-async def coinflip(ctx,args):
+async def coinflip(ctx):
     if random.randint(0, 1):
         await client.say('Heads')
     else: await client.say('Tails')
