@@ -99,7 +99,7 @@ async def bc(ctx,args):
 # CRISPY
 @client.command(pass_context=True)
 async def crispy(ctx):
-    i = random(0, 2)
+    i = random.randint(0, 2)
     if i == 0: await client.say('https://i.imgur.com/YVfXE7W.gif')
     elif i == 1: await client.say('https://i.imgur.com/2SRtfz5.jpg')
     elif i == 2: await client.say('https://i.imgur.com/TiESUTE.jpg')
