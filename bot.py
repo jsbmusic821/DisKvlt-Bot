@@ -24,7 +24,7 @@ async def coinflip(ctx):
         await client.say('Heads')
     else: await client.say('Tails')
 
-# INPUT OF INFORMATION
+# INPUT OF INFORMATION EXAMPLE
 @client.command(pass_context=True)
 async def test(ctx,args):
     await client.say('Your text was: {}'.format(args))
