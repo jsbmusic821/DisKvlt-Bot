@@ -95,6 +95,19 @@ async def moomin(ctx):
 ##################### END HARD CODINGS #############################
 
 
+##################### ADMIN-ONLY COMMANDS ############################
+# Helper function to change avatar and username
+async def update_profile(name, picture):
+    picture = f"config/{picture}"
+    if os.path.isfile(picture):
+        with open(picture, "rb") as avatar:
+            await bot.edit_profile(avatar=avatar.read())
+            log.info("Bot avatar set.")
+        await bot.edit_profile(username=name)
+        log.info("Bot name set.")
+################ END ADMIN-ONLY COMMANDS ##############################
+
+
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
 
