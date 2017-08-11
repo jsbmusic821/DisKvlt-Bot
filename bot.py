@@ -47,7 +47,7 @@ async def lyrics(ctx,args):
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
     if lyrics is None or lyrics == 404 or lyrics == '404':
         await client.say('Not found. `Format: "Artist - Song"`')
-    else await client.say('```' + lyrics + '```')
+    else: await client.say('```' + lyrics + '```')
 
 # COIN FLIP
 @client.command(pass_context=True)
