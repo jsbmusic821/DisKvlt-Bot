@@ -66,7 +66,7 @@ async def wiki(ctx,args):
 # Metal Archives command
 @client.command(pass_context=True)
 async def metal(ctx,args):
-    temp = '{}'.format(args)
+    temp = '{}'.format(args.replace(' ', '+'))
     await client.say('https://www.metal-archives.com/search?searchString=' + temp + '&type=band_name'.format(args))
 
 # YouTube command
@@ -77,18 +77,18 @@ async def yt(ctx,args):
 # Discogs command
 @client.command(pass_context=True)
 async def discogs(ctx,args):
-    temp = '{}'.format(args)
+    temp = '{}'.format(args.replace(' ', '+'))
     await client.say('https://www.discogs.com/search?q=' + temp + '&btn=&type=all'.format(args))
 
 # Bandcamp-search command
 @client.command(pass_context=True)
 async def bcsearch(ctx,args):
-    await client.say('https://bandcamp.com/search?q={}'.format(args))
+    await client.say('https://bandcamp.com/search?q={}'.format(args.replace(' ', '+')))
 
 # Bandcamp command
 @client.command(pass_context=True)
 async def bc(ctx,args):
-    temp = '{}'.format(args)
+    temp = '{}'.format(args.replace(' ', ''))
     await client.say('https://' + temp + '.bandcamp.com'.format(args))
 ##################### END WEBSITE SEARCHERS #############################
 
