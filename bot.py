@@ -5,25 +5,26 @@ import asyncio
 import random
 
 des = 'This is the description inside my code file!'
-
 prefix = '!'
-
 client = commands.Bot(description=des, command_prefix=prefix);
 
 @client.event
 async def on_ready():
     print("Bot is starting...")
 
+# PING
 @client.command(pass_context=True)
 async def ping(ctx):
     await client.say('pong')
 
+# COIN FLIP
 @client.command(pass_context=True)
 async def coinflip(ctx):
     if random.randint(0, 1):
         await client.say('Heads')
     else: await client.say('Tails')
 
+# INPUT OF INFORMATION
 @client.command(pass_context=True)
 async def test(ctx,args):
     await client.say('Your text was: {}'.format(args))
