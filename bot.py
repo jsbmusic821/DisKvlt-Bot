@@ -76,10 +76,16 @@ async def discogs(ctx,args):
     temp = '{}'.format(args)
     await client.say('https://www.discogs.com/search?q=' + temp + '&btn=&type=all'.format(args))
 
+# Bandcamp-search command
+@client.command(pass_context=True)
+async def "bc-search"(ctx,args):
+    await client.say('https://bandcamp.com/search?q={}'.format(args))
+
 # Bandcamp command
 @client.command(pass_context=True)
-async def bandcamp(ctx,args):
-    await client.say('https://bandcamp.com/search?q={}'.format(args))
+async def bc(ctx,args):
+    temp = '{}'.format(args)
+    await client.say('https://' + temp + '.bandcamp.com'.format(args))
 ##################### END WEBSITE SEARCHERS #############################
 
 
@@ -102,17 +108,6 @@ async def moomin(ctx):
 
 
 ##################### ADMIN-ONLY COMMANDS ############################
-async def update_avatar(picture):
-    picture = f"config/{picture}"
-    if os.path.isfile(picture):
-        with open(picture, "rb") as avatar:
-            await bot.edit_profile(avatar=avatar.read())
-
-# async def update_avatar(name, picture):
-#     picture = f"config/{picture}"
-#     if os.path.isfile(picture):
-#         with open(picture, "rb") as avatar:
-#             await bot.edit_profile(avatar=avatar.read())
 ################ END ADMIN-ONLY COMMANDS ##############################
 
 
