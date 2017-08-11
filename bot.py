@@ -78,7 +78,7 @@ async def discogs(ctx,args):
 
 # Bandcamp-search command
 @client.command(pass_context=True)
-async def "bc-search"(ctx,args):
+async def bcsearch(ctx,args):
     await client.say('https://bandcamp.com/search?q={}'.format(args))
 
 # Bandcamp command
