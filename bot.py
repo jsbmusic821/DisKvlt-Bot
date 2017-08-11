@@ -44,7 +44,8 @@ async def pong(ctx):
 @client.command(pass_context=True)
 async def lyrics(ctx,args):
     arr = '{}'.format(args).split(' - ')
-    print(lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1]))
+    lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
+    await client.say('```' + lyrics + '```')
 
 # COIN FLIP
 @client.command(pass_context=True)
