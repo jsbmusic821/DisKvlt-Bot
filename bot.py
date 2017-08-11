@@ -45,7 +45,7 @@ async def pong(ctx):
 async def lyrics(ctx,args):
     arr = '{}'.format(args).split(' - ')
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
-    if lyrics == "" or lyrics is None:
+    if lyrics is None or lyrics == 404 or lyrics == '404':
         lyrics = "Not found."
     await client.say('```' + lyrics + '```')
 
