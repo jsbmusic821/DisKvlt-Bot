@@ -107,10 +107,6 @@ async def moomin(ctx):
 ##################### END HARD CODINGS #############################
 
 
-##################### ADMIN-ONLY COMMANDS ############################
-################ END ADMIN-ONLY COMMANDS ##############################
-
-
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
 
