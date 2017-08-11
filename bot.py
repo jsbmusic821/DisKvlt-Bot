@@ -48,9 +48,9 @@ async def coinflip(ctx):
     else: await client.say('Tails')
 
 # INPUT OF INFORMATION EXAMPLE
-@client.command(pass_context=True)
-async def test(ctx,args):
-    await client.say('Your text was: {}'.format(args))
+# @client.command(pass_context=True)
+# async def test(ctx,args):
+#     await client.say('Your text was: {}'.format(args))
 
 @client.command()
 async def joined(member : discord.Member):
@@ -90,10 +90,20 @@ async def bcsearch(ctx,args):
 async def bc(ctx,args):
     temp = '{}'.format(args.replace(' ', ''))
     await client.say('https://' + temp + '.bandcamp.com'.format(args))
+
+# metal detektor
 ##################### END WEBSITE SEARCHERS #############################
 
 
-#################### HARD CODINGS #################################
+################################### MEMES #######################################
+# CRISPY
+@client.command(pass_context=True)
+async def crispy(ctx):
+    i = random(0, 2)
+    if i == 0: await client.say('https://i.imgur.com/YVfXE7W.gif')
+    elif i == 1: await client.say('https://i.imgur.com/2SRtfz5.jpg')
+    elif i == 2: await client.say('https://i.imgur.com/TiESUTE.jpg')
+
 # Hard-coded Babooshka
 @client.command(pass_context=True)
 async def babooshka(ctx):
@@ -108,7 +118,7 @@ async def whip(ctx):
 @client.command(pass_context=True)
 async def moomin(ctx):
     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
-##################### END HARD CODINGS #############################
+############################## END MEMES #######################################
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
