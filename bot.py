@@ -12,6 +12,7 @@ client = commands.Bot(description=des, command_prefix=prefix);
 async def on_ready():
     print("Bot is starting...")
 
+# Server Welcome
 @client.event
 async def on_member_join(member):
     server = member.server
@@ -23,6 +24,10 @@ async def on_member_join(member):
 @client.command(pass_context=True)
 async def ping(ctx):
     await client.say('pong')
+# PONG... lulz
+@client.command(pass_context=True)
+async def pong(ctx):
+    await client.say('Hey, stop that.')
 ###################################################################
 
 # COIN FLIP
