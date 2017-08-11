@@ -41,6 +41,11 @@ async def metal(ctx,args):
     temp = '{}'.format(args)
     await client.say('https://www.metal-archives.com/search?searchString=' + temp + '&type=band_name'.format(args))
 
+# YouTube command
+@client.command(pass_context=True)
+async def yt(ctx,args):
+    await client.say('https://www.youtube.com/results?search_query={}'}.format(args))
+
 ##################### END WEBSITE SEARCHERS #############################
 
 
