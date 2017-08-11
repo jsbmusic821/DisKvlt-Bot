@@ -46,6 +46,11 @@ async def metal(ctx,args):
 async def yt(ctx,args):
     await client.say('https://www.youtube.com/results?search_query={}'.format(args))
 
+# Discogs command
+@client.command(pass_context=True)
+async def discogs(ctx,args):
+    temp = '{}'.format(args)
+    await client.say('https://www.discogs.com/search?q=' + temp + '&btn=&type=all'.format(args))
 ##################### END WEBSITE SEARCHERS #############################
 
 
