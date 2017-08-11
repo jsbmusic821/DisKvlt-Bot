@@ -29,6 +29,11 @@ async def coinflip(ctx):
 async def test(ctx,args):
     await client.say('Your text was: {}'.format(args))
 
+@bot.command()
+async def joined(member : discord.Member):
+##  Says the date when a member joined.
+    await bot.say('{0.name} joined in {0.joined_at}'.format(member))
+
 #################### WEBSITE SEARCHERS #################################
 # Wiki command
 @client.command(pass_context=True)
