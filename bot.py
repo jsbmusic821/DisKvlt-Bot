@@ -28,4 +28,10 @@ async def coinflip(ctx):
 async def test(ctx,args):
     await client.say('Your text was: {}'.format(args))
 
+# Hard-coded Babooshka
+@client.command(pass_context=True)
+async def babooshka(ctx):
+    await client.say('https://www.youtube.com/watch?v=6xckBwPdo1c')
+
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
+
