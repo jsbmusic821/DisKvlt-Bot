@@ -44,7 +44,7 @@ async def metal(ctx,args):
 # YouTube command
 @client.command(pass_context=True)
 async def yt(ctx,args):
-    await client.say('https://www.youtube.com/results?search_query={}'}.format(args))
+    await client.say('https://www.youtube.com/results?search_query={}'.format(args))
 
 ##################### END WEBSITE SEARCHERS #############################
 
