@@ -102,7 +102,7 @@ async def moomin(ctx):
 
 
 ##################### ADMIN-ONLY COMMANDS ############################
-async def update_avatar(name, picture):
+async def update_avatar(picture):
     picture = f"config/{picture}"
     if os.path.isfile(picture):
         with open(picture, "rb") as avatar:
