@@ -24,4 +24,8 @@ async def coinflip(ctx):
         await client.say('Heads')
     else: await client.say('Tails')
 
+@client.command(pass_context=True)
+async def test(ctx.args):
+    await client.say('Your text was: {}'.format(args))
+
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
