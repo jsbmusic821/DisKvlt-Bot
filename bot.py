@@ -12,6 +12,12 @@ client = commands.Bot(description=des, command_prefix=prefix);
 async def on_ready():
     print("Bot is starting...")
 
+@client.event
+async def on_member_join(member):
+    server = member.server
+    fmt = 'Everybody welcome {0.mention} to the server!'
+    await client.send_message(server, fmt.format(member, server))
+
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
