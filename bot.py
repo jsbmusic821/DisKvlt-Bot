@@ -96,3 +96,18 @@ async def moomin(ctx):
 
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
+
+
+
+# NOTES
+
+
+"""
+allows you to send a message to a specific channel:
+
+def send_to_bot_channel(content):
+    for server in client.servers:
+        for channel in server.channels:
+            if channel.name.casefold() == "chat-bot".casefold():
+                client.send_message(channel, content)
+                """
