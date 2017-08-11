@@ -29,6 +29,12 @@ async def coinflip(ctx):
 async def test(ctx,args):
     await client.say('Your text was: {}'.format(args))
 
+# Wiki command
+@client.command(pass_context=True)
+async def wiki(ctx,args):
+    await client.say('https://en.wikipedia.org/wiki/{}'.format(args))
+
+########################################################################
 # Hard-coded Babooshka
 @client.command(pass_context=True)
 async def babooshka(ctx):
@@ -43,5 +49,7 @@ async def whip(ctx):
 @client.command(pass_context=True)
 async def moomin(ctx):
     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
+########################################################################
+
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
