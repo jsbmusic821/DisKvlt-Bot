@@ -38,8 +38,7 @@ async def wiki(ctx,args):
 # Metal Archives command
 @client.command(pass_context=True)
 async def metal(ctx,args):
-    await client.say('https://www.metal-archives.com/search?searchString={}&type=band_name
-{}'.format(args))
+    await client.say('https://www.metal-archives.com/search?searchString={}&type=band_name{}'.format(args))
 
 ##################### END WEBSITE SEARCHERS #############################
 
