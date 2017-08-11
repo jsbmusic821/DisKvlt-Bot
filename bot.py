@@ -18,10 +18,12 @@ async def on_member_join(member):
     fmt = 'Everybody welcome {0.mention} to the server!'
     await client.send_message(server, fmt.format(member, server))
 
+########### Keeping for historical purposes #######################
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
     await client.say('pong')
+###################################################################
 
 # COIN FLIP
 @client.command(pass_context=True)
