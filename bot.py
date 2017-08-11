@@ -18,18 +18,21 @@ client = commands.Bot(description=des, command_prefix=prefix);
 async def on_ready():
     print("Bot is starting...")
 
+#################### FUNCTIONS #################################################
+
 # Server Welcome
 @client.event
 async def on_member_join(member):
     server = member.server
     fmt = 'Everybody welcome {0.mention} to the server!'
-    await client.send_message(server, fmt.format(member, server))
+    await client.send_message(general, fmt.format(member, server))
 
 ########### Keeping for historical purposes #######################
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    await client.say('pong')
+    #await client.say('pong')
+    await client.send_message(kvlt_memes, test)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
@@ -106,20 +109,6 @@ async def moomin(ctx):
     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
 ##################### END HARD CODINGS #############################
 
-
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
-
-
 #################################################################################
-
-# NOTES
-
-# allows you to send a message to a specific channel:
-"""
-def send_to_bot_channel(content):
-    for server in client.servers:
-        for channel in server.channels:
-            if channel.name.casefold() == "chat-bot".casefold():
-                client.send_message(channel, content)
-                """
