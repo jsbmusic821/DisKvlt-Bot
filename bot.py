@@ -20,6 +20,14 @@ async def on_ready():
 
 #################### FUNCTIONS #################################################
 
+# allows you to send a message to a specific channel:
+def send_to_channel(channel, content):
+    for server in client.servers:
+        for i in server.channels:
+            if i.name.casefold() == channel.casefold():
+                client.send_message(i, content)
+################### END FUNCTIONS ##############################################
+
 # Server Welcome
 @client.event
 async def on_member_join(member):
@@ -32,7 +40,7 @@ async def on_member_join(member):
 @client.command(pass_context=True)
 async def ping(ctx):
     #await client.say('pong')
-    await client.send_message(kvlt_memes, test)
+    send_to_channel(kvlt_memes, pong);
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
