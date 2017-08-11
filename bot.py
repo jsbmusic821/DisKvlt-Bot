@@ -11,7 +11,7 @@ client = commands.Bot(description=des, command_prefix=prefix);
 
 @client.event
 async def on_ready():
-    print("Hello world!")
+    print("Bot is starting...")
 
 @client.command(pass_context=True)
 async def ping(ctx):
