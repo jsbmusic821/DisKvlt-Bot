@@ -40,7 +40,7 @@ async def on_member_join(member):
 @client.command(pass_context=True)
 async def ping(ctx):
     #await client.say('pong')
-    send_to_channel(kvlt_memes, pong);
+    send_to_channel(client.get_channel(kvlt_memes), pong);
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
