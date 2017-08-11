@@ -69,6 +69,11 @@ async def yt(ctx,args):
 async def discogs(ctx,args):
     temp = '{}'.format(args)
     await client.say('https://www.discogs.com/search?q=' + temp + '&btn=&type=all'.format(args))
+
+# Bandcamp command
+@client.command(pass_context=True)
+async def bandcamp(ctx,args):
+    await client.say('https://bandcamp.com/search?q=AAAAA{}'.format(args))
 ##################### END WEBSITE SEARCHERS #############################
 
 
