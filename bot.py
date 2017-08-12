@@ -16,8 +16,7 @@ prefix = '!'
 client = commands.Bot(description=des, command_prefix=prefix);
 
 @client.event
-async def on_ready():
-    print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
+async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
 # async def expire_message(message : discord.Message, seconds):
@@ -103,12 +102,9 @@ async def bc(ctx,args):
 @client.command(pass_context=True)
 async def crispy(ctx):
     i = random.randint(0, 2)
-    a = None;
-    if i == 0: a = await client.say('https://i.imgur.com/YVfXE7W.gif')
-    elif i == 1: a = await client.say('https://i.imgur.com/2SRtfz5.jpg')
-    elif i == 2: a = await client.say('https://i.imgur.com/TiESUTE.jpg')
-    # await asyncio.sleep(300) # deletes the meme after set time
-    # await client.delete_message(a)
+    if i == 0: await client.say('https://i.imgur.com/YVfXE7W.gif')
+    elif i == 1: await client.say('https://i.imgur.com/2SRtfz5.jpg')
+    elif i == 2: await client.say('https://i.imgur.com/TiESUTE.jpg')
 
 # YEE
 @client.command(pass_context=True)
