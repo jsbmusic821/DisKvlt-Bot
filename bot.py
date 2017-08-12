@@ -130,7 +130,8 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    a = await client.send_message(ctx.message.channel, 'pong')
+    a = await client.say('pong')
+    await asyncio.sleep(4)
     await client.delete_message(a)
 # PONG... lulz
 @client.command(pass_context=True)
