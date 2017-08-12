@@ -27,9 +27,8 @@ async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 # Server Welcome
 @client.event
 async def on_member_join(member):
-    server = member.server
-    fmt = 'Everybody welcome {0.mention} to the server!'
-    await client.send_message(server, fmt.format(member, server))
+    msg = 'Everybody welcome {0.mention} to the server!'
+    await client.send_message(server, msg.format(member, member.server))
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
@@ -131,11 +130,15 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    await client.say('pong')
+    msg = await client.say('pong')
+    await asyncio.sleep(5)
+    await client.delete_message(msg)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
-    await client.say('Hey, stop that.')
+    msg = await client.say('Hey, stop that.')
+    await asyncio.sleep(5)
+    await client.delete_message(msg)
 ###################################################################
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
