@@ -52,11 +52,10 @@ async def lyrics(ctx,args):
 
 # Translator
 @client.command(pass_context=True)
-async def trans(ctx,args, message):
+async def trans(ctx, args, message):
     arr = '{}'.format(args).split('->')
     t = Translator(from_lang=arr[0],to_lang=arr[1])
-    answer = t.translate(message)
-    await client.say('```' + answer + '```')
+    await client.say('```' + t.translate(message) + '```')
 
 # COIN FLIP
 @client.command(pass_context=True)
@@ -115,6 +114,11 @@ async def crispy(ctx):
     if i == 0: await client.say('https://i.imgur.com/YVfXE7W.gif')
     elif i == 1: await client.say('https://i.imgur.com/2SRtfz5.jpg')
     elif i == 2: await client.say('https://i.imgur.com/TiESUTE.jpg')
+
+# YEE
+@client.command(pass_context=True)
+async def babooshka(ctx):
+    await client.say('https://www.youtube.com/watch?v=q6EoRBvdVPQ')
 
 # Hard-coded Babooshka
 @client.command(pass_context=True)
