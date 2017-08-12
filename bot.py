@@ -20,9 +20,9 @@ async def on_ready():
     print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
-async def expire_message(message : discord.Message, seconds):
-    #await asyncio.sleep(int(seconds)) # how many seconds before deletion
-    await client.delete(message)
+# async def expire_message(message : discord.Message, seconds):
+#     await asyncio.sleep(int(seconds)) # how many seconds before deletion
+#     await client.delete(message)
 ################### END FUNCTIONS ##############################################
 
 # Server Welcome
@@ -131,8 +131,7 @@ async def moomin(ctx):
 @client.command(pass_context=True)
 async def ping(ctx):
     a = await client.send_message(ctx.message.channel, 'pong')
-    if isinstance(a, discord.Message): await expire_message(a, 3)
-    else: print("nope")
+    await client.delete_message(a)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
