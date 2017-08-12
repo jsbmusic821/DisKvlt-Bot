@@ -13,7 +13,7 @@ from translate import Translator
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
 prefix = '!'
-client = commands.client(description=des, command_prefix=prefix);
+client = commands.bot(description=des, command_prefix=prefix);
 
 @client.event
 async def on_ready():
