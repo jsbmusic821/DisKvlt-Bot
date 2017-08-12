@@ -20,11 +20,11 @@ async def on_ready():
     print("~~~~~~~ client is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
-def send_expiring_message(message, seconds):
-    await client.say(message)
-    await client.wait_until_ready()
-    await asyncio.sleep(int(seconds)) # how many seconds before deletion
-    await client.delete(message)
+# def send_expiring_message(message, seconds):
+#     await client.say(message)
+#     await client.wait_until_ready()
+#     await asyncio.sleep(int(seconds)) # how many seconds before deletion
+#     await client.delete(message)
 ################### END FUNCTIONS ##############################################
 
 # Server Welcome
