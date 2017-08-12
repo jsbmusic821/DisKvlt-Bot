@@ -53,10 +53,11 @@ async def lyrics(ctx,args):
 # Translator
 @client.command(pass_context=True)
 async def trans(ctx,args):
-    arr = '{}'.format(args).split('->')
-    t = Translator(from_lang=arr[0],to_lang=arr[1])
-    answer = t.translate(args[1])
-    await client.say('```' + answer + '```')
+    await client.say(args)
+    # arr = '{}'.format(args).split('->')
+    # t = Translator(from_lang=arr[0],to_lang=arr[1])
+    # answer = t.translate(args)
+    # await client.say('```' + answer + '```')
 
 # COIN FLIP
 @client.command(pass_context=True)
