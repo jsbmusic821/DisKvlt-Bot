@@ -52,9 +52,9 @@ async def coinflip(ctx):
     if random.randint(0, 1): await bot.say('Heads')
     else: await bot.say('Tails')
 
+# JOINED
 @bot.command()
 async def joined(member : discord.Member):
-##  Says the date when a member joined.
     await bot.say('{0.name} joined in {0.joined_at}'.format(member))
 
 #################### WEBSITE SEARCHERS #################################
