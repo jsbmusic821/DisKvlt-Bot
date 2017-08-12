@@ -22,7 +22,7 @@ async def on_ready():
 #################### FUNCTIONS #################################################
 async def expire_message(message : discord.Message, seconds):
     await asyncio.sleep(int(seconds)) # how many seconds before deletion
-    await client.delete(message.channel, message)
+    await client.delete(message)
 ################### END FUNCTIONS ##############################################
 
 # Server Welcome
