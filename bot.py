@@ -131,7 +131,7 @@ async def moomin(ctx):
 @client.command(pass_context=True)
 async def ping(ctx):
     a = await client.send_message(ctx.message.channel, 'pong')
-    if a isinstance(discord.Message): await expire_message(a, 3)
+    if isinstance(a, discord.Message): await expire_message(a, 3)
     else: print("nope")
 # PONG... lulz
 @client.command(pass_context=True)
