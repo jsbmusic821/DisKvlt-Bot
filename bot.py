@@ -21,7 +21,7 @@ async def on_ready():
 
 #################### FUNCTIONS #################################################
 def send_expiring_message(message, seconds):
-    await client.send_message(message)
+    await client.say(message)
     await client.wait_until_ready()
     await asyncio.sleep(int(seconds)) # how many seconds before deletion
     await client.delete(message)
