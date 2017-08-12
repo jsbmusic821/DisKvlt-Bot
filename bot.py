@@ -52,8 +52,9 @@ async def lyrics(ctx,args):
 
 # Translator
 @client.command(pass_context=True)
-async def trans(ctx,args..):
+async def trans(ctx,args, args2):
     await client.say(args)
+    await client.say(args2)
     # arr = '{}'.format(args).split('->')
     # t = Translator(from_lang=arr[0],to_lang=arr[1])
     # answer = t.translate(args)
