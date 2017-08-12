@@ -132,7 +132,7 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    a = await client.say('pong')
+    a = await client.send_message(ctx.message.channel, 'pong')
     await send_expiring_message(a, 5)
 # PONG... lulz
 @client.command(pass_context=True)
