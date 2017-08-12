@@ -27,7 +27,7 @@ async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 # Server Welcome
 @client.event
 async def on_member_join(member):
-    msg = 'Everybody welcome {0.mention} to the server!'
+    msg = '**Everybody welcome {0.mention} to the server!**'
     await client.send_message(server, msg.format(member, member.server))
 
 # LYRIC FETCHER
