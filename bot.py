@@ -60,8 +60,7 @@ async def trans(ctx, args, message):
 # COIN FLIP
 @client.command(pass_context=True)
 async def coinflip(ctx):
-    await client.say('Heads') if random.randint(0, 1)
-    else await client.say('Tails')
+    await client.say('Heads') if random.randint(0, 1) else await client.say('Tails')
 
 @client.command()
 async def joined(member : discord.Member):
