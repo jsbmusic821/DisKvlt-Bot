@@ -17,7 +17,7 @@ client = commands.client(description=des, command_prefix=prefix);
 
 @client.event
 async def on_ready():
-    print("~~~~~~~ client is starting... ~~~~~~~~~~~~")
+    print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
 # def send_expiring_message(message, seconds):
