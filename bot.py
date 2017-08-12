@@ -38,7 +38,9 @@ async def lyrics(ctx,args):
     arr = '{}'.format(args).split(' - ')
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
     if lyrics is None or lyrics == 404 or lyrics == '404':
-        send_expiring_message(await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`'), 15)
+        message = await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`')
+        await asyncio.sleep(5)
+        await client.delete_message(message)
     else: await client.say('```' + lyrics + '```')
 
 # Translator
@@ -130,9 +132,7 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    a = await client.say('pong')
-    await asyncio.sleep(4)
-    await client.delete_message(a)
+    await client.say('pong')
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
