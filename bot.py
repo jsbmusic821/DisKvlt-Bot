@@ -21,10 +21,10 @@ async def on_ready():
 
 #################### FUNCTIONS #################################################
 async def send_expiring_message(message : discord.Message, seconds):
-    await client.send_message(message)
+    await client.send_message(message.channel, message)
 #    await client.wait_until_ready()
     await asyncio.sleep(int(seconds)) # how many seconds before deletion
-    await client.delete(message)
+    await client.delete(message.channel, message)
 ################### END FUNCTIONS ##############################################
 
 # Server Welcome
@@ -133,7 +133,7 @@ async def moomin(ctx):
 @client.command(pass_context=True)
 async def ping(ctx):
     a = await client.send_message(ctx.message.channel, 'pong')
-    await send_expiring_message(a, 5)
+    send_expiring_message(a, 5)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
