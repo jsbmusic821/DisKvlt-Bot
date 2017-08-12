@@ -117,7 +117,7 @@ async def crispy(ctx):
 
 # YEE
 @client.command(pass_context=True)
-async def babooshka(ctx):
+async def yee(ctx):
     await client.say('https://www.youtube.com/watch?v=q6EoRBvdVPQ')
 
 # Hard-coded Babooshka
