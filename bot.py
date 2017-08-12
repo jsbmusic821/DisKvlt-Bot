@@ -93,6 +93,18 @@ async def bc(ctx,args):
     temp = '{}'.format(args.replace(' ', ''))
     await client.say('https://' + temp + '.bandcamp.com'.format(args))
 
+# Google
+@client.command(pass_context=True)
+async def google(ctx,args):
+    temp = '{}'.format(args.replace(' ', ''))
+    await client.say('https://encrypted.google.com/search?hl=en&q={}'.format(args.replace(' ', '+')))
+
+# DuckDuckGo / Disconnect
+@client.command(pass_context=True)
+async def ddg(ctx,args):
+    temp = '{}'.format(args.replace(' ', ''))
+    await client.say('https://search.disconnect.me/searchTerms/search?query={}'.format(args.replace(' ', '+')))
+
 ##################### END WEBSITE SEARCHERS #############################
 
 
