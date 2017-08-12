@@ -20,7 +20,7 @@ async def on_ready():
     print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
-async def send_expiring_message(channel : discord.Channel, message : discord.Message, seconds):
+async def send_expiring_message(message : discord.Message, seconds):
     await client.send_message(message)
     await client.wait_until_ready()
     await asyncio.sleep(int(seconds)) # how many seconds before deletion
@@ -40,7 +40,7 @@ async def lyrics(ctx,args):
     arr = '{}'.format(args).split(' - ')
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
     if lyrics is None or lyrics == 404 or lyrics == '404':
-        send_expiring_message(await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`'), 5)
+        send_expiring_message(await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`'), 15)
     else: await client.say('```' + lyrics + '```')
 
 # Translator
