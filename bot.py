@@ -30,17 +30,6 @@ async def on_member_join(member):
     fmt = 'Everybody welcome {0.mention} to the server!'
     await bot.send_message(server, fmt.format(member, server))
 
-########### Keeping for historical purposes #######################
-# PING
-@bot.command(pass_context=True)
-async def ping(ctx):
-    await bot.say('pong')
-# PONG... lulz
-@bot.command(pass_context=True)
-async def pong(ctx):
-    await bot.say('Hey, stop that.')
-###################################################################
-
 # LYRIC FETCHER
 @bot.command(pass_context=True)
 async def lyrics(ctx,args):
@@ -60,7 +49,8 @@ async def trans(ctx, args, message):
 # COIN FLIP
 @bot.command(pass_context=True)
 async def coinflip(ctx):
-    await bot.say('Heads') if random.randint(0, 1) else await bot.say('Tails')
+    if random.randint(0, 1): await bot.say('Heads')
+    else: await bot.say('Tails')
 
 @bot.command()
 async def joined(member : discord.Member):
@@ -133,6 +123,17 @@ async def whip(ctx):
 async def moomin(ctx):
     await bot.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
 ############################## END MEMES #######################################
+
+########### Keeping for historical purposes #######################
+# PING
+@bot.command(pass_context=True)
+async def ping(ctx):
+    await bot.say('pong')
+# PONG... lulz
+@bot.command(pass_context=True)
+async def pong(ctx):
+    await bot.say('Hey, stop that.')
+###################################################################
 
 bot.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
