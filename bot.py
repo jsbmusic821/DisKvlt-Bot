@@ -19,16 +19,14 @@ client = commands.Bot(description=des, command_prefix=prefix);
 async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 
 #################### FUNCTIONS #################################################
-# async def expire_message(message : discord.Message, seconds):
-#     await asyncio.sleep(int(seconds)) # how many seconds before deletion
-#     await client.delete(message)
 ################### END FUNCTIONS ##############################################
 
 # Server Welcome
 @client.event
 async def on_member_join(member):
-    msg = '**Everybody welcome {0.mention} to the server!**'
-    await client.send_message(server, msg.format(member, member.server))
+    server = member.server
+    fmt = '**Everybody welcome {0.mention} to the server!**'
+    await client.send_message(server, fmt.format(member, server))
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
@@ -58,6 +56,8 @@ async def coinflip(ctx):
 @client.command()
 async def joined(member : discord.Member):
     await client.say('{0.name} joined in {0.joined_at}'.format(member))
+
+
 
 #################### WEBSITE SEARCHERS #################################
 # Wiki command
