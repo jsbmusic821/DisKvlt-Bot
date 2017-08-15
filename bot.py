@@ -147,7 +147,7 @@ async def ping(ctx):
     await asyncio.sleep(5)
     await client.delete_message(msg)
 # PONG... lulz
-@client.command(pass_context=True)
+@client.command(pass_context=True)g
 async def pong(ctx):
     msg = await client.say('Hey, stop that.')
     await asyncio.sleep(5)
