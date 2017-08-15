@@ -10,6 +10,8 @@ from discord import Game, InvalidArgument, HTTPException
 import lyricfetcher
 import translate
 from translate import Translator
+import system
+import subprocess
 
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
@@ -160,9 +162,11 @@ async def pong(ctx):
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
-    if str(ctx.message.author.top_role) == "admin":
-        await client.say('true')
-    else: await client.say('false')
+    author = ctx.author
+    if str(author.top_role) == "admin":
+        subprocess.call(['sh $HOME/run.sh'])
+        exit()
+    else: await client.say("Hah, I don't listen to you, @" + str(author))
 
 # kill
 
