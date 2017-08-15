@@ -9,6 +9,7 @@ from discord import Game, InvalidArgument, HTTPException
 import lyricfetcher
 import translate
 from translate import Translator
+import Permissions
 
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
@@ -160,7 +161,8 @@ async def pong(ctx):
 @client.command(pass_context=True)
 async def restart(ctx):
 #    if ctx.message.author == discord.Permissions.adminstrator: await client.say('true')
-    if ctx.Permissions.adminstrator: await client.say('true')
+    if permissions_for(ctx.author) == discord.Permissions.adminstrator:
+        await client.say('true')
     else: await client.say('false')
 
 # kill
