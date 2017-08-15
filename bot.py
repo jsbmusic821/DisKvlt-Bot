@@ -154,6 +154,16 @@ async def pong(ctx):
     await client.delete_message(msg)
 ###################################################################
 
+############ MAINTENANCE COMMANDS ###################################
+
+# RESTART
+@client.command(pass_context=True)
+async def restart(ctx):
+    if user == adminstrator: await client.say('true')
+    else: await client.say('false')
+
+# kill
+
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
 #################################################################################
