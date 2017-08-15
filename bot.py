@@ -165,7 +165,7 @@ async def restart(ctx):
     author = ctx.author
     if str(author.top_role) == "admin":
         subprocess.call(['sh $HOME/run.sh'])
-         await client.say("restarting...")
+        await client.say("restarting...")
         exit()
     else: await client.say("Hah, I don't listen to you, @" + str(author))
 
