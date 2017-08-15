@@ -165,8 +165,7 @@ async def restart(ctx):
     author = ctx.message.author
     if str(author.top_role) == "admin":
         await client.say("restarting...")
-        subprocess.call(['cd', '/root/TapeKvlt-Discord-Bot'])
-        subprocess.call(['git', 'pull', 'origin', 'master'])
+        subprocess.call(['restart.sh'])
         await asyncio.sleep(10)
         await client.say("Varg has restarted. *Let's find out!*")
         #subprocess.call(['python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
