@@ -160,7 +160,7 @@ async def pong(ctx):
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
-    if ctx.message.author.top_role == "admin":
+    if str(ctx.message.author.top_role) == "admin":
         await client.say('true')
     else: await client.say('false')
 
