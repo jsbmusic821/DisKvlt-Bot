@@ -10,8 +10,6 @@ import lyricfetcher
 import translate
 from translate import Translator
 
-#test
-
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
 prefix = '!'
 client = commands.Bot(description=des, command_prefix=prefix);
