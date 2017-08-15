@@ -6,4 +6,4 @@ PYTHON="python3.6"
 # Enter wherever you place your downloaded dir
 BOT_DIR="$HOME/TapeKvlt-Discord-Bot"
 
-git pull && $PYTHON $BOT_DIR/bot.py
+cd $BOT_DIR && git pull && $PYTHON bot.py
