@@ -168,7 +168,7 @@ async def restart(ctx):
         subprocess.call("./restart.sh", shell=True)
         await asyncio.sleep(10)
         await client.say("Varg has restarted. *Let's find out!*")
-        subprocess.call("python3.6 /root/bot.py", shell=True)
+        subprocess.call("python3.6 ./bot.py", shell=True)
         exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
