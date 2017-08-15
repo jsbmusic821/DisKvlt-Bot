@@ -176,7 +176,7 @@ async def restart(ctx):
 async def kill(ctx):
     author = ctx.message.author
     if str(author.top_role) == "admin":
-        await client.say("*Until the light takes us... Which is now for me. *dies*")
+        await client.say("*Until the light takes us...* Which is now for me. *dies*")
         await exit()
     else: await client.say("Hah, I don't listen to you, @" + str(author))
 
