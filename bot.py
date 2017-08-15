@@ -159,7 +159,7 @@ async def pong(ctx):
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
-    if user == adminstrator: await client.say('true')
+    if ctx.message.author == discord.Permissions.adminstrator: await client.say('true')
     else: await client.say('false')
 
 # kill
