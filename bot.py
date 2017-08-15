@@ -171,7 +171,16 @@ async def restart(ctx):
         await exit()
     else: await client.say("Hah, I don't listen to you, @" + str(author))
 
-# kill
+# KILL
+@client.command(pass_context=True)
+async def kill(ctx):
+    author = ctx.message.author
+    if str(author.top_role) == "admin":
+        await client.say("*Until the light takes us... Which is now for me. *dies*")
+        await exit()
+    else: await client.say("Hah, I don't listen to you, @" + str(author))
+
+
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
