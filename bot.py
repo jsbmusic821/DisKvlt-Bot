@@ -169,7 +169,7 @@ async def restart(ctx):
         await asyncio.sleep(6)
         subprocess.call(['python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
         await exit()
-    else: await client.say("Hah, I don't listen to you, @" + str(author))
+    else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 # KILL
 @client.command(pass_context=True)
@@ -178,7 +178,7 @@ async def kill(ctx):
     if str(author.top_role) == "admin":
         await client.say("*Until the light takes us...* Which is now for me. *dies*")
         await exit()
-    else: await client.say("Hah, I don't listen to you, @" + str(author))
+    else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 
 
