@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import Permissions
 import logging
 import asyncio
 import random
@@ -9,7 +10,6 @@ from discord import Game, InvalidArgument, HTTPException
 import lyricfetcher
 import translate
 from translate import Translator
-import Permissions
 
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
