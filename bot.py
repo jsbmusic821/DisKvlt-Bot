@@ -146,7 +146,7 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    msg = await client.say('pong AYY LMAO')
+    msg = await client.say('pong')
     await asyncio.sleep(7)
     await client.delete_message(msg)
 # PONG... lulz
@@ -168,7 +168,7 @@ async def restart(ctx):
         subprocess.call("./restart.sh", shell=True)
         await asyncio.sleep(10)
         await client.say("Varg has restarted. *Let's find out!*")
-        subprocess.call(['python3.6', './bot.py'], shell=True)
+        subprocess.call("python3.6 /root/bot.py", shell=True)
         exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
