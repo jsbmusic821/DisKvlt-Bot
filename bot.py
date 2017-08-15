@@ -146,7 +146,7 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    msg = await client.say('pong')
+    msg = await client.say('pong asdfsddf')
     await asyncio.sleep(7)
     await client.delete_message(msg)
 # PONG... lulz
@@ -167,9 +167,10 @@ async def restart(ctx):
         await client.say("restarting...")
         subprocess.call(['cd', '/root/TapeKvlt-Discord-Bot'])
         subprocess.call(['git', 'pull', 'origin', 'master'])
-        await asyncio.sleep(15)
-        subprocess.call(['python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
-        exit()
+        await asyncio.sleep(10)
+        await client.say("Varg has restarted. *Let's find out!*")
+        #subprocess.call(['python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
+        #exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 # KILL
