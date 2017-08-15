@@ -167,7 +167,7 @@ async def restart(ctx):
         await client.say("restarting...")
         subprocess.call(['git', 'pull'])
         await asyncio.sleep(6)
-        subprocess.call('python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
+        subprocess.call(['python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
         await exit()
     else: await client.say("Hah, I don't listen to you, @" + str(author))
 
