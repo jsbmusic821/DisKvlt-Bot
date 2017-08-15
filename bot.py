@@ -146,7 +146,7 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    msg = await client.say('pong asdfasdfsdfasdf')
+    msg = await client.say('pong')
     await asyncio.sleep(7)
     await client.delete_message(msg)
 # PONG... lulz
@@ -166,10 +166,10 @@ async def restart(ctx):
     if str(author.top_role) == "admin":
         await client.say("restarting...")
         subprocess.call(['cd', '/root/TapeKvlt-Discord-Bot'])
-        subprocess.call(['git', 'pull'])
+        subprocess.call(['git', 'pull', 'origin', 'master'])
         await asyncio.sleep(15)
         subprocess.call(['python3.6', '/root/TapeKvlt-Discord-Bot/bot.py'])
-        await exit()
+        exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 # KILL
