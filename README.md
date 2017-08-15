@@ -9,7 +9,6 @@ made using discord.py:
 
 https://github.com/Rapptz/discord.py
 
-
 discord.py's API documentation:
 
 https://discordpy.readthedocs.io/en/latest/index.html
