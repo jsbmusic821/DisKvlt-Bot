@@ -164,7 +164,7 @@ async def pong(ctx):
 async def restart(ctx):
     author = ctx.message.author
     if str(author.top_role) == "admin":
-        await subprocess.call(['git', 'pull', '&&', 'python3.6', '/root/TapeKvlt-Discord-Bot/bot.py', '&'])
+        subprocess.call(['git', 'pull', '&&', 'python3.6', '/root/TapeKvlt-Discord-Bot/bot.py', '&'])
         await client.say("restarting...")
         await exit()
     else: await client.say("Hah, I don't listen to you, @" + str(author))
