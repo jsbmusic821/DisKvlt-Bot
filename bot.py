@@ -146,7 +146,7 @@ async def moomin(ctx):
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
-    msg = await client.say('pong')
+    msg = await client.say('MYFAROG is the better than DnD.')
     await asyncio.sleep(7)
     await client.delete_message(msg)
 # PONG... lulz
