@@ -10,7 +10,7 @@ from discord import Game, InvalidArgument, HTTPException
 import lyricfetcher
 import translate
 from translate import Translator
-import system
+import sys
 import subprocess
 
 
