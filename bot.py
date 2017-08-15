@@ -38,7 +38,7 @@ async def lyrics(ctx,args):
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
     if lyrics is None or lyrics == 404 or lyrics == '404':
         message = await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`')
-        await asyncio.sleep(5)
+        await asyncio.sleep(7)
         await client.delete_message(message)
     else: await client.say('```' + lyrics + '```')
 
@@ -147,13 +147,13 @@ async def moomin(ctx):
 @client.command(pass_context=True)
 async def ping(ctx):
     msg = await client.say('pong')
-    await asyncio.sleep(5)
+    await asyncio.sleep(7)
     await client.delete_message(msg)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
     msg = await client.say('Hey, stop that.')
-    await asyncio.sleep(5)
+    await asyncio.sleep(7)
     await client.delete_message(msg)
 ###################################################################
 
@@ -164,7 +164,7 @@ async def pong(ctx):
 async def restart(ctx):
     author = ctx.message.author
     if str(author.top_role) == "admin":
-        await subprocess.call(['git', + 'pull', + '&&', + 'python3.6', + '/root/TapeKvlt-Discord-Bot/bot.py', + '&'])
+        await subprocess.call(['git', 'pull', '&&', 'python3.6', '/root/TapeKvlt-Discord-Bot/bot.py', '&'])
         await client.say("restarting...")
         await exit()
     else: await client.say("Hah, I don't listen to you, @" + str(author))
