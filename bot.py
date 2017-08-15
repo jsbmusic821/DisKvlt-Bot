@@ -162,7 +162,7 @@ async def pong(ctx):
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
-    author = ctx.Message.author
+    author = ctx.message.author
     if str(author.top_role) == "admin":
         subprocess.call(['sh $HOME/run.sh'])
         await client.say("restarting...")
