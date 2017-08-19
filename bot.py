@@ -121,6 +121,11 @@ async def crispy(ctx):
     elif i == 2: await client.say('https://i.imgur.com/TiESUTE.jpg')
     elif i == 3: await client.say('https://i.imgur.com/V1qfPgl.jpg')
 
+# ITS HAPPENING!
+@client.command(pass_context=True)
+async def itshappening(ctx):
+    await client.say('https://i.imgur.com/7drHiqr.gif')
+
 # YEE
 @client.command(pass_context=True)
 async def Yee(ctx):
