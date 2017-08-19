@@ -28,7 +28,7 @@ async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 @client.event
 async def on_member_join(member):
     server = member.server
-    fmt = '**Everybody welcome {0.mention} to the server!**'
+    fmt = '**Hey everyone @here, welcome {0.mention} to the server!**'
     await client.send_message(server, fmt.format(member, server))
 
 # LYRIC FETCHER
@@ -152,13 +152,13 @@ async def moomin(ctx):
 @client.command(pass_context=True)
 async def ping(ctx):
     msg = await client.say('pong')
-    await asyncio.sleep(7)
+    await asyncio.sleep(10)
     await client.delete_message(msg)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
     msg = await client.say('Hey, stop that.')
-    await asyncio.sleep(7)
+    await asyncio.sleep(10)
     await client.delete_message(msg)
 ###################################################################
 
@@ -169,11 +169,12 @@ async def pong(ctx):
 async def restart(ctx):
     author = ctx.message.author
     if str(author.top_role) == "admin":
-        await client.say("restarting...")
+        message = await client.say("restarting...")
         subprocess.call("./restart.sh", shell=True)
         await asyncio.sleep(10)
         await client.say("Varg has restarted. *Let's find out!*")
         subprocess.call("python3.6 ./bot.py", shell=True)
+        await client.delete_message(message)
         exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
