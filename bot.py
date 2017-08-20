@@ -132,9 +132,9 @@ async def itshappening(ctx):
 @client.command(pass_context=True)
 async def cat(ctx):
     with urllib.request.urlopen("https://random.cat/meow") as url:
-        result = str(url.read())
-    url = re.search("(?P<url>https?://[^\s]+)", result).group("url")
-    await client.say(url)
+        rawURL = str(url.read())
+    parsedURL = re.search("(?P<url>https?://[^\s]+)", rawURL).group("url")
+    await client.say(parsedURL)
 
 # YEE
 @client.command(pass_context=True)
