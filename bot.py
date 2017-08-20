@@ -12,8 +12,10 @@ import translate
 from translate import Translator
 import sys
 import subprocess
-import urllib.request
 import re
+import requests
+import json
+import urllib
 
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
@@ -131,10 +133,13 @@ async def itshappening(ctx):
 # RANDOM CAT
 @client.command(pass_context=True)
 async def cat(ctx):
-    with urllib.request.urlopen("https://random.cat/meow") as url:
-        rawURL = str(url.read())
-    parsedURL = re.search("(?P<url>https?://[^\s]+)", rawURL).group("url")
-    await client.say(parsedURL)
+    r = requests.get("http://random.cat/meow")
+    r = str(r.content)
+    r = r.replace("b'","")
+    r = r.replace("'","")
+    r = r.replace("\\","")
+    url = json.loads(r)["file"]
+    await client.say(url)
 
 # YEE
 @client.command(pass_context=True)
