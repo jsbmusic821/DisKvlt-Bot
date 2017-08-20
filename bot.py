@@ -12,6 +12,8 @@ import translate
 from translate import Translator
 import sys
 import subprocess
+import urllib.request
+import re
 
 
 des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
@@ -125,6 +127,14 @@ async def crispy(ctx):
 @client.command(pass_context=True)
 async def itshappening(ctx):
     await client.say('https://i.imgur.com/7drHiqr.gif')
+
+# RANDOM CAT
+@client.command(pass_context=True)
+async def cat(ctx):
+    with urllib.request.urlopen("https://random.cat/meow") as url:
+        result = str(url.read())
+    url = re.search("(?P<url>https?://[^\s]+)", result).group("url")
+    await client.say(url)
 
 # YEE
 @client.command(pass_context=True)
