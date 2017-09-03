@@ -1,3 +1,4 @@
+
 import discord
 from discord.ext import commands
 from discord import Permissions
@@ -63,6 +64,13 @@ async def coinflip(ctx):
 @client.command()
 async def joined(member : discord.Member):
     await client.say('{0.name} joined in {0.joined_at}'.format(member))
+
+# MEMBERS
+@client.command()
+async def members(ctx):
+    i = 0
+    for member in server.members: i += 1
+    await client.say("There are " + i + " members in the server!")
 
 
 
@@ -211,7 +219,7 @@ async def kill(ctx):
 
 client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 
-#################################################################################
+####################################T#############################################
 
 # Notes
 
@@ -219,3 +227,10 @@ client.run('MzQ1NDAwODA0OTY4MTAzOTM3.DG676w.gt_HkXfpCQbxuEwoiHGACywn5Bs')
 # @client.command(pass_context=True)
 # async def test(ctx,args):
 #     await client.say('Your text was: {}'.format(args))
+
+"""
+Suggestions to implement:
+
+1) image to ASCII getter, (/giphy -> ascii output)
+2) currency conversion
+"""
