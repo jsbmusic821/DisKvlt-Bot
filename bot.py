@@ -69,7 +69,9 @@ async def joined(member : discord.Member):
 @client.command(pass_context=True)
 async def members(ctx):
     i = 0
-    for member in server.members: i += 1
+    for server in client.servers:
+        for member in server.members:
+            i += 1
     await client.say("There are " + i + " members in the server!")
 
 
