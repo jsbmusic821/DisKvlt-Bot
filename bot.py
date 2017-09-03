@@ -72,7 +72,7 @@ async def members(ctx):
     for server in client.servers:
         for member in server.members:
             i += 1
-    await client.say("There are " + str(i) + " members in the server!")
+    await client.say("There are **" + str(i) + "** members in the server!")
 
 
 
