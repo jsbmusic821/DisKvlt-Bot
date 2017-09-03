@@ -66,7 +66,7 @@ async def joined(member : discord.Member):
     await client.say('{0.name} joined in {0.joined_at}'.format(member))
 
 # MEMBERS
-@client.command()
+@client.command(pass_context=True)
 async def members(ctx):
     i = 0
     for member in server.members: i += 1
