@@ -163,9 +163,15 @@ async def cat(ctx):
     url = json.loads(r)["file"]
     await client.say(url)
     i = random.randint(0, 29)
-    if i == 0: await client.say("MEOW.")
-    elif i == 1: await client.say("I love cats.")
-    elif i == 2: await client.say("*purr...*")
+    if i == 0:
+        await asyncio.sleep(5)
+        await client.say("MEOW.")
+    elif i == 1:
+        await asyncio.sleep(5)
+        await client.say("I love cats.")
+    elif i == 2:
+        await asyncio.sleep(5)
+        await client.say("*purr...*")
 
 # YEE
 @client.command(pass_context=True)
