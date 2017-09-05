@@ -161,7 +161,7 @@ async def cat(ctx):
     r = r.replace("'","")
     r = r.replace("\\","")
     url = json.loads(r)["file"]
-    i = random.randint(0, 49)
+    i = random.randint(0, 39)
     if i == 0: await client.say("MEOW.")
     elif i == 1: await client.say("I love cats.")
     elif i == 2: await client.say("*purr...*")
