@@ -37,6 +37,15 @@ async def on_member_join(member):
     await client.send_message(server, fmt.format(member, server))
     await client.say("Check out the pins to get started!")
 
+    i = 0
+    for server in client.servers:
+        for member in server.members:
+            i += 1
+    if i == 100:
+        await.client.say("https://i.imgur.com/mkolxJC.jpg")
+        await.client.say("@everyone, we now have 100 members!")
+
+
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
