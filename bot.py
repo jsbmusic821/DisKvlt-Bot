@@ -33,8 +33,10 @@ async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
 @client.event
 async def on_member_join(member):
     server = member.server
-    fmt = '**Hey everyone @here, welcome {0.mention} to the server!**'
+    fmt = '**Welcome to the server, {0.mention}!**'
     await client.send_message(server, fmt.format(member, server))
+    await client.say("Check out the pins to get started!")
+
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
