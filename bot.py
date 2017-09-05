@@ -42,8 +42,8 @@ async def on_member_join(member):
         for member in server.members:
             i += 1
     if i == 100:
-        await.client.say("https://i.imgur.com/mkolxJC.jpg")
-        await.client.say("@everyone, we now have 100 members!")
+        await client.say("https://i.imgur.com/mkolxJC.jpg")
+        await client.say("@everyone, we now have 100 members!")
 
 
 
