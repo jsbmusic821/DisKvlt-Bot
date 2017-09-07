@@ -238,7 +238,7 @@ async def kill(ctx):
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 
-token = sys.argv[1:]
+token = sys.argv[1]
 client.run(token)
 
 ####################################T#############################################
