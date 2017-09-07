@@ -43,6 +43,9 @@ async def on_member_join(member):
             i += 1
     if i == 100:
         await client.send_message(server, "https://i.imgur.com/mkolxJC.jpg")
+    elif i < 100:
+        msg = "if you are a previous member, please see this link for more information: http://bit.ly/2wLO9vr"
+        await client.send_message(server, "{0.mention}, " + msg)
 
 
 
