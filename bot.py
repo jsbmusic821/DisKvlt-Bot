@@ -41,10 +41,11 @@ async def on_member_join(member):
     for server in client.servers:
         for member in server.members:
             i += 1
+    client.say("There are now **" + str(i) + "** members in the server!")
     if i == 100:
         await client.send_message(server, "https://i.imgur.com/mkolxJC.jpg")
     elif i < 100:
-        msg = "{0.mention}, if you are a previous member, please see this link for more information: http://bit.ly/2wLO9vr"
+        msg = "{0.mention}, if you were a previous member, please see this link: http://bit.ly/2wLO9vr"
         await client.send_message(server, msg.format(member, server))
 
 
