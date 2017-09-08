@@ -158,7 +158,7 @@ async def itshappening(ctx):
 # RANDOM CAT
 @client.command(pass_context=True)
 async def cat(ctx):
-    r = requests.get("http://random.cat/meow")
+    r = requests.get("https://random.cat/meow")
     r = str(r.content)
     r = r.replace("b'","")
     r = r.replace("'","")
