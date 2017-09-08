@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 from discord import Permissions
@@ -223,7 +222,7 @@ async def restart(ctx):
         subprocess.call("./restart.sh", shell=True)
         await asyncio.sleep(10)
         await client.say("Varg has restarted. *Let's find out!*")
-        subprocess.call("python3.6 ./bot.py", shell=True)
+        subprocess.call("python3.6 ./bot.py sys.argv[1]", shell=True)
         await client.delete_message(message)
         exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
