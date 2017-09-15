@@ -175,6 +175,12 @@ async def cat(ctx):
         await asyncio.sleep(5)
         await client.say("*purr...*")
 
+# RANDOM DOG
+@client.command(pass_context=True)
+async def dog(ctx):
+    r = requests.get("https://random.dog/woof")
+    await client.say("https://random.dog/" + str(r.content))
+
 # YEE
 @client.command(pass_context=True)
 async def Yee(ctx):
