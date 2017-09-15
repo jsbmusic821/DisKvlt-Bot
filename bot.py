@@ -182,7 +182,7 @@ async def dog(ctx):
     r = str(r.content)
     r = r.replace("b'","")
     r = r.replace("'","")
-    await client.say("https://random.dog/" + r))
+    await client.say("https://random.dog/" + r)
 
 # YEE
 @client.command(pass_context=True)
