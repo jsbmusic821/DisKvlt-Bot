@@ -179,7 +179,10 @@ async def cat(ctx):
 @client.command(pass_context=True)
 async def dog(ctx):
     r = requests.get("https://random.dog/woof")
-    await client.say("https://random.dog/" + str(r.content))
+    r = str(r.content)
+    r = r.replace("b'","")
+    r = r.replace("'","")
+    await client.say("https://random.dog/" + r))
 
 # YEE
 @client.command(pass_context=True)
