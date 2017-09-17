@@ -132,7 +132,7 @@ async def google(ctx,args):
 @client.command(pass_context=True)
 async def ddg(ctx,args):
     temp = '{}'.format(args.replace(' ', ''))
-    await client.say('https://search.disconnect.me/searchTerms/search?query={}'.format(args.replace(' ', '+')))
+    await client.say('https://duckduckgo.com/html?q={}&atb=v40-2a_'.format(args.replace(' ', '+')))
 
 ##################### END WEBSITE SEARCHERS #############################
 
