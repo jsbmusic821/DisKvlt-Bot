@@ -18,7 +18,7 @@ import json
 import urllib
 
 
-des = "Hi, I'm /r/TapeKvlt's bot! Beep, bop, boop..."
+des = "Hi, I'm the crispy Cornflakes eater bot! Beep, bop, boop..."
 prefix = '!'
 client = commands.Bot(description=des, command_prefix=prefix);
 
