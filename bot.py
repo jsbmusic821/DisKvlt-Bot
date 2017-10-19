@@ -18,7 +18,11 @@ import json
 import urllib
 
 
+<<<<<<< HEAD
 des = "Hi, I'm DisKvlt's bot! Beep, bop, boop..."
+=======
+des = "Hi, I'm the crispy Cornflakes eater bot! Beep, bop, boop..."
+>>>>>>> d442702464d43134078aa9621635a8899fd1241a
 prefix = '!'
 client = commands.Bot(description=des, command_prefix=prefix);
 
