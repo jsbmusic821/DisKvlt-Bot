@@ -16,7 +16,7 @@ import re
 import requests
 import json
 import urllib
-
+from bs4 import BeautifulSoup
 
 des = "Hi, I'm DisKvlt's bot! Beep, bop, boop..."
 prefix = '!'
@@ -24,9 +24,6 @@ client = commands.Bot(description=des, command_prefix=prefix);
 
 @client.event
 async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
-
-#################### FUNCTIONS #################################################
-################### END FUNCTIONS ##############################################
 
 # Server Welcome
 @client.event
@@ -102,8 +99,17 @@ async def metal(ctx,args):
 
 # YouTube command
 @client.command(pass_context=True)
-async def yt(ctx,args):
-    await client.say('https://www.youtube.com/results?search_query={}'.format(args.replace(' ', '+')))
+async def yt(ctx):
+    textToSearch = ctx.message.clean_content.split('yt', 1)[-1]
+    query = urllib.parse.quote(textToSearch)
+    url = "https://www.youtube.com/results?search_query=" + query
+    response = urllib.request.urlopen(url)
+    html = response.read()
+    soup = BeautifulSoup(html, "html5lib")
+    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}):
+        if "user" not in vid["href"]:
+            await client.say('https://www.youtube.com' + vid['href'])
+            break
 
 # Discogs command
 @client.command(pass_context=True)
@@ -128,7 +134,7 @@ async def google(ctx,args):
     temp = '{}'.format(args.replace(' ', ''))
     await client.say('https://encrypted.google.com/search?hl=en&q={}'.format(args.replace(' ', '+')))
 
-# DuckDuckGo / Disconnect
+# DuckDuckGo
 @client.command(pass_context=True)
 async def ddg(ctx,args):
     temp = '{}'.format(args.replace(' ', ''))
@@ -221,45 +227,35 @@ async def pong(ctx):
 
 ############ MAINTENANCE COMMANDS ###################################
 
-# RESTART
-@client.command(pass_context=True)
-async def restart(ctx):
-    author = ctx.message.author
-    if str(author.top_role) == "admin":
-        message = await client.say("restarting...")
-        subprocess.call("./restart.sh", shell=True)
-        await asyncio.sleep(10)
-        await client.say("Varg has restarted. *Let's find out!*")
-        subprocess.call("python3.6 ./bot.py sys.argv[1]", shell=True)
-        await client.delete_message(message)
-        exit()
-    else: await client.say("http://e.lvme.me/xmeh35.jpg")
+# # RESTART
+# @client.command(pass_context=True)
+# async def restart(ctx):
+#     author = ctx.message.author
+#     if str(author.top_role) == "admin":
+#         message = await client.say("restarting...")
+#         subprocess.call("./restart.sh", shell=True)
+#         await asyncio.sleep(10)
+#         await client.say("Varg has restarted. *Let's find out!*")
+#         subprocess.call("python3.6 ./bot.py sys.argv[1]", shell=True)
+#         await client.delete_message(message)
+#         exit()
+#     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
-# KILL
-@client.command(pass_context=True)
-async def kill(ctx):
-    author = ctx.message.author
-    if str(author.top_role) == "admin":
-        await client.say("*Until the light takes us...* Which is now for me. *dies*")
-        await exit()
-    else: await client.say("http://e.lvme.me/xmeh35.jpg")
-
+# # KILL
+# @client.command(pass_context=True)
+# async def kill(ctx):
+#     author = ctx.message.author
+#     if str(author.top_role) == "admin":
+#         await client.say("*Until the light takes us...* Which is now for me. *dies*")
+#         await exit()
+#     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 token = sys.argv[1]
 client.run(token)
 
 ####################################T#############################################
 
-# Notes
-
 # INPUT OF INFORMATION EXAMPLE
 # @client.command(pass_context=True)
 # async def test(ctx,args):
 #     await client.say('Your text was: {}'.format(args))
-
-"""
-Suggestions to implement:
-
-1) image to ASCII getter, (/giphy -> ascii output)
-2) currency conversion
-"""
