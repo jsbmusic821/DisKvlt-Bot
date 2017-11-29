@@ -73,6 +73,15 @@ async def coinflip(ctx):
 async def joined(member : discord.Member):
     await client.say('{0.name} joined in {0.joined_at}'.format(member))
 
+# AGE
+@client.command(pass_context=True)
+async def age(ctx):
+    for server in client.servers:
+        for member in server.members:
+            if member is server.owner:
+                await client.say("The server is " + member.joined_at + " old")
+                return
+
 # MEMBERS
 @client.command(pass_context=True)
 async def members(ctx):
@@ -225,6 +234,12 @@ async def pong(ctx):
     await asyncio.sleep(10)
     await client.delete_message(msg)
 
+# RULES
+@client.command(pass_context=True)
+async def rules(ctx):
+    await client.say("Rule #1: Don't be a dick. \n" + \
+                     "Rule #2: See rule #1")
+
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
@@ -235,7 +250,7 @@ async def restart(ctx):
                python3.6 ~/DisKvlt-Bot/bot.py " + sys.argv[1] + "&")
         sleep(3)
         await client.delete_message(message)
-        await client.say("Varg has restarted. *Let's... find out!*")
+        await client.say("Varg has restarted. *Let's find out!*")
         await exit()
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
