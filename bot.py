@@ -79,7 +79,8 @@ async def age(ctx):
     for server in client.servers:
         for member in server.members:
             if member is server.owner:
-                await client.say("The server is " + member.joined_at + " old")
+                await client.say("The server was created on " \
+                                 + "{0.joined_at}".format(member))
                 return
 
 # MEMBERS
