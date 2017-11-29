@@ -11,37 +11,35 @@ import lyricfetcher
 import translate
 from translate import Translator
 import sys
-import subprocess
 import re
 import requests
 import json
 import urllib
 from bs4 import BeautifulSoup
+from os import system
+from time import sleep
 
-des = "Hi, I'm DisKvlt's bot! Beep, bop, boop..."
-prefix = '!'
-client = commands.Bot(description=des, command_prefix=prefix);
+client = commands.Bot(description="Hi, I'm DisKvlt's bot! Beep, bop, boop...",\
+                      command_prefix='!');
 
 @client.event
-async def on_ready(): print("~~~~~~~ bot is starting... ~~~~~~~~~~~~")
+async def on_ready(): print("~~~~~~~ bot has started... ~~~~~~~~~~~~")
 
 # Server Welcome
 @client.event
 async def on_member_join(member):
-    server = member.server
-    fmt = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 {0.mention}!**'
-    await client.send_message(server, fmt.format(member, server))
-
     i = 0
-    for server in client.servers:
-        for member in server.members:
-            i += 1
-    client.say("There are now **" + str(i) + "** members in the server!")
+    for member in member.server.members: i += 1
+
+    fmt = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 {0.mention}!**'
+    await client.send_message(server, fmt.format(member, server) + "\n" + \
+                "There are now **" + str(i) + "** members in the server!")
+
     if i == 100:
         await client.send_message(server, "https://i.imgur.com/mkolxJC.jpg")
-    elif i < 100:
-        msg = "{0.mention}, if you were a previous member, please see this link: http://bit.ly/2wLO9vr"
-        await client.send_message(server, msg.format(member, server))
+    elif i == 200:
+        await client.send_message(server, "200 Members YEEEEEEE!!!!")
+
 
 
 
@@ -51,7 +49,8 @@ async def lyrics(ctx,args):
     arr = '{}'.format(args).split(' - ')
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
     if lyrics is None or lyrics == 404 or lyrics == '404':
-        message = await client.say('Not found. ¯\_(ツ)_/¯ *Format:* `"Artist - Song"`')
+        message = await client.say('Not found. ¯\_(ツ)_/¯ \
+                                   *Format:* `"Artist - Song"`')
         await asyncio.sleep(7)
         await client.delete_message(message)
     else: await client.say('```' + lyrics + '```')
@@ -94,8 +93,9 @@ async def wiki(ctx,args):
 # Metal Archives command
 @client.command(pass_context=True)
 async def metal(ctx,args):
-    temp = '{}'.format(args.replace(' ', '+'))
-    await client.say('https://www.metal-archives.com/search?searchString=' + temp + '&type=band_name'.format(args))
+    await client.say('https://www.metal-archives.com/search?searchString=' \
+                     + '{}'.format(args.replace(' ', '+')) \
+                     + '&type=band_name'.format(args))
 
 # YouTube command
 @client.command(pass_context=True)
@@ -114,8 +114,9 @@ async def yt(ctx):
 # Discogs command
 @client.command(pass_context=True)
 async def discogs(ctx,args):
-    temp = '{}'.format(args.replace(' ', '+'))
-    await client.say('https://www.discogs.com/search?q=' + temp + '&btn=&type=all'.format(args))
+    await client.say('https://www.discogs.com/search?q=' \
+                     + '{}'.format(args.replace(' ', '+')) \
+                     + '&btn=&type=all'.format(args))
 
 # Bandcamp-search command
 @client.command(pass_context=True)
@@ -126,20 +127,19 @@ async def bcsearch(ctx,args):
 @client.command(pass_context=True)
 async def bc(ctx,args):
     temp = '{}'.format(args.replace(' ', ''))
-    await client.say('https://' + temp + '.bandcamp.com'.format(args))
+    await client.say('https://' \
+                     + '{}'.format(args.replace(' ', '')) \
+                     + '.bandcamp.com'.format(args))
 
 # Google
 @client.command(pass_context=True)
 async def google(ctx,args):
-    temp = '{}'.format(args.replace(' ', ''))
     await client.say('https://encrypted.google.com/search?hl=en&q={}'.format(args.replace(' ', '+')))
 
 # DuckDuckGo
 @client.command(pass_context=True)
 async def ddg(ctx,args):
-    temp = '{}'.format(args.replace(' ', ''))
     await client.say('https://duckduckgo.com/html?q={}&atb=v40-2a_'.format(args.replace(' ', '+')))
-
 ##################### END WEBSITE SEARCHERS #############################
 
 
@@ -171,13 +171,13 @@ async def cat(ctx):
     await client.say(url)
     i = random.randint(0, 29)
     if i == 0:
-        await asyncio.sleep(5)
+        await asyncio.sleep(3)
         await client.say("MEOW.")
     elif i == 1:
-        await asyncio.sleep(5)
+        await asyncio.sleep(3)
         await client.say("I love cats.")
     elif i == 2:
-        await asyncio.sleep(5)
+        await asyncio.sleep(3)
         await client.say("*purr...*")
 
 # RANDOM DOG
@@ -188,6 +188,8 @@ async def dog(ctx):
     r = r.replace("b'","")
     r = r.replace("'","")
     await client.say("https://random.dog/" + r)
+    if random.randint(0,29) == 0:
+        await client.say("cats are better...")
 
 # YEE
 @client.command(pass_context=True)
@@ -210,7 +212,6 @@ async def moomin(ctx):
     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
 ############################## END MEMES #######################################
 
-########### Keeping for historical purposes #######################
 # PING
 @client.command(pass_context=True)
 async def ping(ctx):
@@ -223,39 +224,27 @@ async def pong(ctx):
     msg = await client.say('Hey, stop that.')
     await asyncio.sleep(10)
     await client.delete_message(msg)
-###################################################################
 
-############ MAINTENANCE COMMANDS ###################################
+# RESTART
+@client.command(pass_context=True)
+async def restart(ctx):
+    print(ctx.message.author.top_role.name)
+    if ctx.message.author.top_role.name == "Admin":
+        message = await client.say("restarting...")
+        system("cd ~/DisKvlt-Bot && git pull --force && \
+               python3.6 ~/DisKvlt-Bot/bot.py " + sys.argv[1] + "&")
+        sleep(3)
+        await client.delete_message(message)
+        await client.say("Varg has restarted. *Let's... find out!*")
+        await exit()
+    else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
-# # RESTART
-# @client.command(pass_context=True)
-# async def restart(ctx):
-#     author = ctx.message.author
-#     if str(author.top_role) == "admin":
-#         message = await client.say("restarting...")
-#         subprocess.call("./restart.sh", shell=True)
-#         await asyncio.sleep(10)
-#         await client.say("Varg has restarted. *Let's find out!*")
-#         subprocess.call("python3.6 ./bot.py sys.argv[1]", shell=True)
-#         await client.delete_message(message)
-#         exit()
-#     else: await client.say("http://e.lvme.me/xmeh35.jpg")
+# KILL
+@client.command(pass_context=True)
+async def kill(ctx):
+    if ctx.message.author.top_role.name == "Admin":
+        await client.say("*Until the light takes us...* Which is now for me. *dies*")
+        await exit()
+    else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
-# # KILL
-# @client.command(pass_context=True)
-# async def kill(ctx):
-#     author = ctx.message.author
-#     if str(author.top_role) == "admin":
-#         await client.say("*Until the light takes us...* Which is now for me. *dies*")
-#         await exit()
-#     else: await client.say("http://e.lvme.me/xmeh35.jpg")
-
-token = sys.argv[1]
-client.run(token)
-
-####################################T#############################################
-
-# INPUT OF INFORMATION EXAMPLE
-# @client.command(pass_context=True)
-# async def test(ctx,args):
-#     await client.say('Your text was: {}'.format(args))
+client.run(sys.argv[1])
