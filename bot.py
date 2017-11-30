@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup
 from os import system
 from time import sleep
 
+
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Beep, bop, boop...",\
                       command_prefix='!');
 
@@ -28,39 +29,48 @@ async def on_ready(): print("~~~~~~~ bot has started... ~~~~~~~~~~~~")
 # Server Welcome
 @client.event
 async def on_member_join(member):
-    i = 0
-    for member in member.server.members: i += 1
+    try:
+        i = 0
+        for member in member.server.members: i += 1
 
-    fmt = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 {0.mention}!**'
-    await client.send_message(server, fmt.format(member, server) + "\n" + \
-                "There are now **" + str(i) + "** members in the server!")
+        fmt = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 {0.mention}!**'
+        await client.send_message(member.server, fmt.format(member, server) + "\n" + \
+                    "There are now **" + str(i) + "** members in the server!")
 
-    if i == 100:
-        await client.send_message(server, "https://i.imgur.com/mkolxJC.jpg")
-    elif i == 200:
-        await client.send_message(server, "200 Members YEEEEEEE!!!!")
-
+        if i == 100:
+            await client.send_message(server, "https://i.imgur.com/mkolxJC.jpg")
+        elif i == 200:
+            await client.send_message(server, "200 Members YEEEEEEE!!!!")
+    except: await client.send_message(server, "ERROR: something broke in: " + "on_member_join")
 
 
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
-async def lyrics(ctx,args):
+async def lyrics(ctx, *args):
+    args = " ".join(args)
     arr = '{}'.format(args).split(' - ')
     lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
-    if lyrics is None or lyrics == 404 or lyrics == '404':
+    if lyrics is None or lyrics == 404 or lyrics == "404":
         message = await client.say('Not found. ¯\_(ツ)_/¯ \
-                                   *Format:* `"Artist - Song"`')
-        await asyncio.sleep(7)
+                                *Format:* `"Artist - Song"`')
+        await asyncio.sleep(10)
         await client.delete_message(message)
     else: await client.say('```' + lyrics + '```')
 
 # Translator
 @client.command(pass_context=True)
-async def trans(ctx, args, message):
-    arr = '{}'.format(args).split('->')
+async def trans(ctx, *args):
+    if "bugs" in args[0]:
+        await client.say("Wraith... bugs is not a language.")
+        return
+
+    if len(args[0]) == 2:
+        arr = [args[0], "en"]
+    else: arr = '{}'.format(args[0]).split('->')
     t = Translator(from_lang=arr[0],to_lang=arr[1])
-    await client.say('```' + t.translate(message) + '```')
+    text = " ".join(args[1:])
+    await client.say('```' + t.translate(text) + '```')
 
 # COIN FLIP
 @client.command(pass_context=True)
@@ -110,16 +120,17 @@ async def metal(ctx,args):
 # YouTube command
 @client.command(pass_context=True)
 async def yt(ctx):
-    textToSearch = ctx.message.clean_content.split('yt', 1)[-1]
-    query = urllib.parse.quote(textToSearch)
-    url = "https://www.youtube.com/results?search_query=" + query
-    response = urllib.request.urlopen(url)
-    html = response.read()
-    soup = BeautifulSoup(html, "html5lib")
-    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}):
-        if "user" not in vid["href"]:
-            await client.say('https://www.youtube.com' + vid['href'])
-            break
+    try:
+        textToSearch = ctx.message.clean_content.split('yt', 1)[-1]
+        query = urllib.parse.quote(textToSearch)
+        url = "https://www.youtube.com/results?search_query=" + query
+        html = urllib.request.urlopen(url).read()
+        soup = BeautifulSoup(html, "html5lib")
+        for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}):
+            if "user" not in vid["href"]:
+                await client.say('https://www.youtube.com' + vid['href'])
+                break
+    except: await client.send_message(server, "ERROR: something broke in: " + "yt")
 
 # Discogs command
 @client.command(pass_context=True)
@@ -244,15 +255,29 @@ async def rules(ctx):
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
-    print(ctx.message.author.top_role.name)
+    try:
+        print(ctx.message.author.top_role.name)
+        if ctx.message.author.top_role.name == "Admin":
+            message = await client.say("restarting...")
+            system("cd ~/DisKvlt-Bot && git pull --force && \
+                python3.6 ~/DisKvlt-Bot/bot.py " + sys.argv[1] + "&")
+            sleep(3)
+            await client.delete_message(message)
+            await client.say("Varg has restarted. *Let's find out!*")
+            exit()
+        else: await client.say("http://e.lvme.me/xmeh35.jpg")
+    except: pass
+
+# IP
+@client.command(pass_context=True)
+async def ip(ctx):
     if ctx.message.author.top_role.name == "Admin":
-        message = await client.say("restarting...")
-        system("cd ~/DisKvlt-Bot && git pull --force && \
-               python3.6 ~/DisKvlt-Bot/bot.py " + sys.argv[1] + "&")
-        sleep(3)
-        await client.delete_message(message)
-        await client.say("Varg has restarted. *Let's find out!*")
-        await exit()
+        for server in client.servers:
+            for channel in server.channels:
+                if channel.name == "admin_chat":
+                    import subprocess
+                    ip = subprocess.check_output(['curl', '-s', 'http://wtfismyip.com/text'])
+                    client.send_message(channel, ip)
     else: await client.say("http://e.lvme.me/xmeh35.jpg")
 
 # KILL
