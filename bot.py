@@ -18,6 +18,7 @@ from bs4 import BeautifulSoup
 from os import system
 from time import sleep
 
+from globals import *
 from emojis import *
 from admin_utils import *
 from pinboard import on_pushpin,remove_pin 
@@ -25,7 +26,7 @@ from bookmark import on_bookmark
 from banned import is_banned
 from hatespeech import check_hate_speech
 from image_search import search_for_image
-from globals import *
+from releases import get_releases
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Beep, bop, boop...",\
                       command_prefix='!');
@@ -73,8 +74,14 @@ async def on_member_join(member):
         if channel.name == "bot_zone":
             await client.send_message(channel, member.mention \
                 + "Welcome! I can do a lot of cool things. \n Use `!help`" \
-                + " to find out more! " + vargbeanie)
-    
+                + " to find out more! " + str(vargbeanie))
+  
+# Metal Archives releases scraper
+@client.command(pass_context=True)
+async def releases(ctx, *args):
+    """Scrapes metal-archives for relases from <band>"""
+    await get_releases(ctx, client, args)
+
 # LYRIC FETCHER
 @client.command(pass_context=True)
 async def lyrics(ctx, *args):
@@ -112,6 +119,11 @@ async def image(ctx, *args):
     """Downloads the first image from google images and uploads it as a file"""
     await search_for_image(ctx, client, args)
 
+# alias for images
+@client.command(pass_context=True)
+async def images(ctx, *args):
+    await search_for_image(ctx, client, args)
+
 # JOINED
 @client.command()
 async def joined(member : discord.Member):
@@ -121,16 +133,29 @@ async def joined(member : discord.Member):
 # Total Messages
 @client.command(pass_context=True)
 async def total(ctx):
+    """Calculates total number of messages sent by you on the server - Please don't abuse this"""
+
+    author = ctx.message.author
+
+    start_message = await client.say(author.mention \
+            + " Working. This may take a while...")
+    
+    from threading import Thread
     count = 0
     for channel in diskvlt.channels:
-        # try:
-        async for message in client.logs_from(channel, limit=1000000):
-            if message.author == ctx.message.author:
-                count += 1
-        # except: continue
+        if channel.type == discord.ChannelType.text:
+            # try:
+            print("Starting to count messages in: " + channel.name)
+            async for message in client.logs_from(channel, limit=100000000):
+                if message.author == author:
+                    count += 1
+                    print(count)
+            # except: continue
 
-    await client.say(ctx.message.author.mention + " has sent " + str(count) \
+    await client.delete_message(start_message)
+    await client.say(author.mention + " has sent " + str(count) \
                      + " messages on the server")
+    print("Finished calculating total for user: " + author.mention)
 
 # AGE
 @client.command(pass_context=True)
@@ -187,7 +212,7 @@ async def yt(ctx, *args):
 async def discogs(ctx,*args):
     """Search Discogs.com"""
     await client.say('https://www.discogs.com/search?q=' \
-                     + '{}'.format(args.replace(' ', '+')) \
+                     + '{}'.format(" ".join(args).replace(' ', '+')) \
                      + '&btn=&type=all'.format(" ".join(args)))
 
 # Bandcamp command
@@ -321,6 +346,9 @@ async def ping(ctx):
     msg = await client.say('pong')
     await asyncio.sleep(5)
     await client.delete_message(msg)
+
+
+
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
@@ -351,6 +379,12 @@ async def purge(ctx, *args):
     """(admin) - Ex: '!purge channel user limit'"""
     await admin_purge(ctx, client, diskvlt, args)
 
+# Debug
+@client.command(pass_context = True)
+async def debug(ctx):
+    """(admin) - makes me say goofy stuff"""
+    await toggle_debug(ctx, client)
+
 # RESTART
 @client.command(pass_context=True)
 async def restart(ctx):
@@ -359,6 +393,21 @@ async def restart(ctx):
 
 @client.event
 async def on_message(message):
+
+    CLEAN_CONTENT = message.clean_content
+
+    # if someone pm's varg, relay the content to me
+    if message.channel.type == discord.ChannelType.private \
+       and message.author != client.user \
+       and message.author.name != "mitch" \
+       and message.author.name != "Botty McBotFace":
+        for user in client.get_all_members():
+            # try:
+            if user.name == "mitch":
+                await client.send_message(user, message.author.mention \
+                    + "\n" + "```" + CLEAN_CONTENT + "```")
+                return 
+            # except: continue
 
     # if this is a file with no text, do nothing
     try: 
@@ -399,7 +448,7 @@ async def on_message(message):
             await client.add_reaction(message, wavedog)
 
 
-    if "emoji" in text and "movie" in text:
+    elif "emoji" in text and "movie" in text:
         await client.add_reaction(message, banned)
 
     like_detection = [
@@ -484,11 +533,14 @@ async def on_message(message):
         await client.add_reaction(message, banned) 
 
     elif "lamp" in text or "lampening" in text or "lamped" in text \
-            or ("varg" in text and "bot" in text and "best" in text) or \
-            ("let" in text and "find" in text and "out" in text):
+            or ("let" in text and "find" in text and "out" in text):
         await client.add_reaction(message, varglaugh)
 
-    elif "bug" in text and not "katebugs" in text:
+    elif "varg" in text and ("best" in text or "much better" in text or
+            "i love" in text or "adorable" in text):
+        await client.add_reaction(message, blush_varg)
+
+    elif "bugs" in text and not "katebugs" in text:
         await client.add_reaction(message, "🐛")
 
     elif "23 times" in text:

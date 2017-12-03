@@ -8,7 +8,7 @@ async def search_for_image(ctx, client, args):
     # because people are idiots
     words = [
         "porn", "naked", "botfly", "bot fly", "tits", "shit", "penis", "cock", \
-        "dick", "nude", "baby", "hitler", "sex"
+        "dick", "nude", "hitler", "sex"
     ]
     tmp_query = "".join(args)
     for word in words:

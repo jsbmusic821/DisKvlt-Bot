@@ -1,3 +1,6 @@
+debug = False
+
+
 # these users won't get shill-checked
 allowed_users = [
     "mitch", "cyril", "stupid-frenchie", "wraithvomit", "metalhexe", \

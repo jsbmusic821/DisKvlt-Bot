@@ -73,7 +73,7 @@ async def on_pushpin(reaction, user, client, diskvlt):
         # if the above failed, its only text -- no file
         try: 
             if "http" not in reaction.message.clean_content.lower() \
-            or "www" not in reaction.message.clean_content.lower():
+            and "www" not in reaction.message.clean_content.lower():
                 text = "From " + reaction.message.author.mention + "  ~  " \
                         + date + "\n" + \
                         '```' + reaction.message.clean_content + '```'

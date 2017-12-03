@@ -30,9 +30,16 @@ async def on_bookmark(reaction, user, client):
         except: pass
     
     except:
-        # otherwise it is just text/link
-        await client.send_message(user, "From " \
-            + reaction.message.author.mention + 
-            "  -  " + date + "\n" + "```" \
-            + reaction.message.clean_content + "```")
+        try: 
+            if "http" not in reaction.message.clean_content.lower() \
+            and "www" not in reaction.message.clean_content.lower():
+                text = "From " + reaction.message.author.mention + "  ~  " \
+                        + date + "\n" + \
+                        '```' + reaction.message.clean_content + '```'
+            else: 
+                text = "From " + reaction.message.author.mention  + "  ~  " \
+                        + date + "\n" \
+                        + reaction.message.clean_content
 
+            await client.send_message(user, text)
+        except: pass

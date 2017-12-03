@@ -1,4 +1,6 @@
 from emojis import *
+import globals
+from globals import *
 import asyncio
 
 # ECHO
@@ -33,20 +35,33 @@ async def admin_restart(ctx, client):
 # MESSAGE
 async def admin_message(ctx, client, args):
     """(admin) - Ex: '!message user foo'"""
-    if ctx.message.author.name == "mitch" or \
-       ctx.message.author.top_role.name.lower() == "admin":
+    try:
+        if ctx.message.author.name == "mitch" or \
+        ctx.message.author.top_role.name.lower() == "admin":
 
-        for user in client.get_all_members():
-            NAME = ""
-            try:
-                if user.nick is not None:
-                    NAME = user.nick
-            except:
-                if user.name is not None:
-                    NAME = user.name
-            if NAME.lower() == args[0]:
-                await client.send_message(user, " ".join(args[1:]))
-    else: await client.send_file(ctx.message.channel, "res/no-power.jpg")
+            for user in client.get_all_members():
+                if user.name.lower() == args[0]:
+                    await client.send_message(user, " ".join(args[1:]))
+                    return
+        else: await client.send_file(ctx.message.channel, "res/no-power.jpg")
+    except: await client.send_file(ctx.message.channel, "res/no-power.jpg")
+
+# Debug
+async def toggle_debug(ctx, client):
+    try:
+        if ctx.message.author.name == "mitch" or \
+            ctx.message.author.top_role.name.lower() == "admin":
+
+
+            if globals.debug: globals.debug = False
+            else: globals.debug = True
+
+            if globals.debug: msg = await client.say("Debugging enabled.")
+            else: msg = await client.say("Debugging disabled.")
+            await asyncio.sleep(10)
+            await client.delete_message(msg)
+        else: await client.send_file(ctx.message.channel, "res/no-power.jpg")
+    except: await client.send_file(ctx.message.channel, "res/no-power.jpg")
 
 
 # PURGE
@@ -82,14 +97,14 @@ async def admin_purge(ctx, client, diskvlt, args):
                         + "** messages from channel: " + ctx.message.channel.name)
                 else:
                     msg = await client.send_message(channel, "No messages were deleted.")
-                try: await asyncio.sleep(5)
+                try: await asyncio.sleep(10)
                 except: pass
                 try: await client.delete_message(msg)
                 except: pass
             except:
                 msg = await client.say("Error: Did you try to purge too" \
                                  + " too many messages? Or too old?")
-                await asyncio.sleep(5)
+                await asyncio.sleep(10)
                 await client.delete_message(msg)
 
         if args[0].lower() == "all":
