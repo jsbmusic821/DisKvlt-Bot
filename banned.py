@@ -10,8 +10,3 @@ async def is_banned(name):
         if name == user:
             return True
     return False
-
-# adds the :banned: emoji to a message
-async def ban(message):
-    await client.add_reaction(message, "<:banned:345751228082421760>")
-

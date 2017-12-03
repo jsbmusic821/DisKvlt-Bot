@@ -41,8 +41,8 @@ bornagain = create_emoji("bornagain", "338080634646036480")
 brutal = create_emoji("brutal", "355715521410498560")
 dead = create_emoji("dead", "355715555774431232")
 salt = create_emoji("salt", "345758525781442560")
-bookmark = "\U0001f516"
-pushpin = "\U0001f4cc"
+bookmark_emoji = "\U0001f516"
+pushpin_emoji = "\U0001f4cc"
 
 @client.event
 async def on_ready(): 
@@ -53,17 +53,8 @@ async def on_ready():
     print("~~~~~~~~~~~~ bot has started... ~~~~~~~~~~~~")
 
        
-@client.command()
-async def bookmark(ctx):
-    """Varg will pm you any message reacted with the :bookmark: emoji!"""
-    pass
 
-@client.command()
-async def pin(ctx):
-    """Varg will send any message reacted with :pushpin: to #pin_board!"""
-    pass
-
-# BOOKMARK
+# BOOKMARK / PIN
 @client.event
 async def on_reaction_add(reaction, user):
     
@@ -71,7 +62,8 @@ async def on_reaction_add(reaction, user):
     except: pass
 
     try:
-        if reaction.emoji == bookmark:
+        if reaction.emoji == bookmark_emoji:
+            print("Reaction was bookmark!")
             # if has attachments, it is an uploaded picture
             try: 
                 json = str(reaction.message.attachments[0])
@@ -79,7 +71,7 @@ async def on_reaction_add(reaction, user):
                 try:
                     print("Trying to bookmark file text, if exists")
                     await client.send_message(user, reaction.message.clean_content)
-                except: pass
+                except: print("exception in on_reaction add: Checkpoint 1")
                 await client.send_message(user, json[5])
             except:
                 # otherwise it is just text/link
@@ -87,21 +79,21 @@ async def on_reaction_add(reaction, user):
         
         # --------------------------------------------------------- #
         
-        elif reaction.emoji == pushpin:
+        elif reaction.emoji == pushpin_emoji:
+            print("Reaction was pushpin!")
             # the hooligans went and made varg recursive...
             # have to add a check here to make sure its not the pin board itself
-            if reaction.message.channel.name == "pin_board": 
-                return
+            if reaction.message.channel.name == "pin_board": return
 
             i = 0
             for reaction in reaction.message.reactions:
-                if reaction.emoji == pushpin:
-
-                    i += 1
+                try:
+                    if reaction.emoji == pushpin: i += 1
                     # it must have already been pinned
                     if i > 1: 
                         print("\n \n This has already been pinned! \n \n ")
                         return
+                except: continue
             
             pin_board = ""
             for channel in diskvlt.channels:
@@ -134,27 +126,27 @@ async def on_reaction_add(reaction, user):
                 print("\n" + "Trying to pin the file: " + json[5])
                 await client.send_message(pin_board, json[5])
             except:
-                print("Error: Not a file! Attemping to post as just text..")
-                # otherwise it is just text/link
-                
+                print("Error: Not a file! Attemping to post as just text...")
                 # make sure the message hasn't already been pinned
                 for message in client.messages:
                     if message.channel.name == "pin_board":
                         if message.clean_content == reaction.message.clean_content:
                             return
                 await client.send_message(pin_board, reaction.message.clean_content)
-    except: pass
+    except: print("ERROR: Checkpoint -1 failed in on_reaction_add")
 
 # Remove Reaction
 @client.event
 async def on_reaction_remove(reaction, user):
     # delete message in #pin_board on removal of pushpin emoji
-    if reaction.emoji == pushpin:
-        for message in client.messages:
-            if message.channel.name == "pin_board":
-                if message.clean_content == reaction.message.clean_content:
-                    await client.delete_message(message)
-                    return
+    try: 
+        if reaction.emoji == pushpin_emoji:
+            for message in client.messages:
+                if message.channel.name == "pin_board":
+                    if message.clean_content == reaction.message.clean_content:
+                        await client.delete_message(message)
+                        return
+    except: pass
                 
 
 # Server Welcome
@@ -163,9 +155,15 @@ async def on_member_join(member):
     i = 0
     for member in diskvlt.members: i += 1
 
-    fmt = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 {0.mention}!**'
-    await client.send_message(diskvlt, fmt.format(member, diskvlt) + "\n" + \
+    msg = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 ' + member.mention + '!**'
+    await client.send_message(diskvlt, msg + "\n" + \
                 "There are now **" + str(i) + "** members in the server!")
+
+    for channel in diskvlt.channels:
+        if channel.name == "bot_zone":
+            await client.send_message(channel, member.mention \
+                + "Welcome! I can do a lot of cool things. \n Use `!help`" \
+                + " to find out more!")
     
 # LYRIC FETCHER
 @client.command(pass_context=True)
@@ -278,18 +276,23 @@ async def metal(ctx, *args):
 async def yt(ctx, *args):
     """Search and link a youtube video"""
 
+    # command takes a while, this lets ppl know its working
+
     query = urllib.parse.quote(" ".join(args).lower())
     
-    if "emoji" in query:
+    if "emoji" in query: 
         return
 
     url = "https://www.youtube.com/results?search_query=" + query
     html = urllib.request.urlopen(url).read()
     soup = BeautifulSoup(html, "html5lib")
-    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}):
+    i = 0
+    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit=1):
+        i += 1
         if "user" not in vid["href"] and "googleads" not in vid["href"]:
             await client.say('https://www.youtube.com' + vid['href'])
             break
+    print(i)
 
 # Discogs command
 @client.command(pass_context=True)
@@ -341,13 +344,20 @@ async def r(ctx, arg):
 @client.command(pass_context=True)
 async def crispy(ctx):
     """memes"""
-    i = random.randint(0, 4)
-    if i == 0: await client.say('https://i.imgur.com/YVfXE7W.gif')
-    elif i == 1: await client.say('https://i.imgur.com/2SRtfz5.jpg')
-    elif i == 2: await client.say('https://i.imgur.com/TiESUTE.jpg')
-    elif i == 3: await client.say('https://i.imgur.com/V1qfPgl.jpg')
-    elif i == 4: await client.say('https://i.imgur.com/PzLJRka.jpg')
-
+    
+    i = random.randint(0, 6)
+    filename = ""
+    if i == 0: filename = "res/when-are-soft.jpg"
+    elif i == 1: filename = "res/pokemon.jpg"
+    elif i == 2: filename = "res/this-is-where.jpg"
+    elif i == 3: filename = "res/so-asked-me.gif"
+    elif i == 4: filename = "res/varg-flakes.jpg"
+    elif i == 5: filename = "res/varg-flakes2.png"
+    elif i == 6: filename = "res/cornflakes.gif"
+    
+    await client.send_file(ctx.message.channel, filename)
+    
+    
 # ITS HAPPENING!
 @client.command(pass_context=True)
 async def itshappening(ctx):
@@ -507,8 +517,8 @@ async def check_hate_speech(message):
                 if channel.name == "admin_chat":
                     await client.send_message(channel, \
                             "Report: " + nick + ' - "' \
-                            + message.clean_content + '"'\
-                            " - in channel [#" + message.channel.name + "]")
+                            + message.clean_content + '"' \
+                            + " - in channel [#" + message.channel.name + "]")
                     break
             await client.add_reaction(message,vargdisapproves)
             break
@@ -519,6 +529,9 @@ async def check_hate_speech(message):
 @client.event
 async def on_message(message):
 
+    if message.clean_content[0] == "!": 
+        await client.send_typing(message.channel)
+    
     # if this is a file with no text, do nothing
     try: 
         if len(message.clean_content) == 0: return
@@ -578,7 +591,9 @@ async def on_message(message):
         "are posers", "is for posers", "is for hipsters", "is trash", \
         "is terrible", "is boring", "are dull", "are boring", "are shit", \
         "are bad", "are garbage", "are trash", "are terrible", \
-        "i fucking hate", "is fucking garbage", "is fucking trash", "is stupid"
+        "i fucking hate", "is fucking garbage", "is fucking trash", "is stupid", \
+        "uninteresting"
+
     ]
 
     i_like_list = [ 
@@ -649,6 +664,9 @@ async def on_message(message):
             ("let" in text and "find" in text and "out" in text):
         await client.add_reaction(message, varglaugh)
 
+    elif "bug" in text and not "katebugs" in text:
+        await client.add_reaction(message, "🐛")
+
     elif "23 times" in text:
         await client.add_reaction(message, varg)
 
@@ -691,7 +709,14 @@ async def on_message(message):
         await client.add_reaction(message, "🇫")
         await client.add_reaction(message, "🇺")
 
+@client.command()
+async def bookmark(ctx):
+    """Varg will pm you any message reacted with the :bookmark: emoji!"""
+    pass
 
-
+@client.command()
+async def pin(ctx):
+    """Varg will send any message reacted with :pushpin: to #pin_board!"""
+    pass
 
 client.run(sys.argv[1])
