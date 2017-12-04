@@ -1,7 +1,7 @@
 from emojis import *
 
 # hate speech checks to wake up the mods... /pol/ trolls...
-async def check_hate_speech(message, client):
+async def check_hate_speech(diskvlt, message, client):
     words = [
        "nigger", "faggot", "jews", "heil hitler", "1488", "libtard", "cuck", \
         "build the wall", "kike"
@@ -11,7 +11,8 @@ async def check_hate_speech(message, client):
         role = message.author.top_role
         if role is not None:
             r_name = role.name.lower()
-            if r_name == "bot" or r_name == "mod" or r_name == "admin":
+            if r_name == "bot":
+                # or r_name == "mod" or r_name == "admin":
                 return
     except: pass
  
@@ -20,8 +21,9 @@ async def check_hate_speech(message, client):
             nick = ""
             
             try:
-                if message.author.nick is not None:
-                    nick = message.author.nick
+                nick = message.author.mention
+                if "invalid user" in nick.lower():
+                    raise Failed
             except: 
                 nick = message.author.name
 

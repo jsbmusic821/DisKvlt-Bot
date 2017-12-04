@@ -28,7 +28,7 @@ from hatespeech import check_hate_speech
 from image_search import search_for_image
 from releases import get_releases
 
-client = commands.Bot(description="Hi, I'm DisKvlt's bot! Beep, bop, boop...",\
+client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
 
 # server
@@ -43,7 +43,6 @@ async def on_ready():
     print("~~~~~~~~~~~~ bot has started... ~~~~~~~~~~~~")
 
        
-
 # BOOKMARK / PIN
 @client.event
 async def on_reaction_add(reaction, user):
@@ -57,7 +56,7 @@ async def on_reaction_add(reaction, user):
 async def on_reaction_remove(reaction, user):
     # delete message in #pin_board on removal of pushpin emoji
     if reaction.emoji == pushpin_emoji:
-        await remove_pin(reaction, client)
+        await remove_pin(reaction.message, client)
                 
 
 # Server Welcome
@@ -73,7 +72,7 @@ async def on_member_join(member):
     for channel in diskvlt.channels:
         if channel.name == "bot_zone":
             await client.send_message(channel, member.mention \
-                + "Welcome! I can do a lot of cool things. \n Use `!help`" \
+                + " Welcome! I can do a lot of cool things. \n Use `!help`" \
                 + " to find out more! " + str(vargbeanie))
   
 # Metal Archives releases scraper
@@ -311,6 +310,15 @@ async def dog(ctx):
     if random.randint(0,29) == 0:
         await client.say("cats are better...")
 
+# RANDOM CAGE
+@client.command(pass_context=True)
+async def cage(ctx):
+    """THE ONE TRUE GOD"""
+    num = random.randint(0,13)
+    if num < 10: num = "0" + str(num)
+    url = "http://randomcage.xyz/img/cage" + str(num) + ".jpg"
+    await client.say(url)
+
 # COIN FLIP
 @client.command(pass_context=True)
 async def coinflip(ctx):
@@ -337,7 +345,6 @@ async def coinflip(ctx):
 # @client.command(pass_context=True)
 # async def moomin(ctx):
 #     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
-############################## END MEMES #######################################
 
 # PING
 @client.command(pass_context=True)
@@ -346,8 +353,6 @@ async def ping(ctx):
     msg = await client.say('pong')
     await asyncio.sleep(5)
     await client.delete_message(msg)
-
-
 
 # PONG... lulz
 @client.command(pass_context=True)
@@ -422,7 +427,7 @@ async def on_message(message):
     if await is_banned(message.author.name): return
     else:await client.process_commands(message)
 
-    await check_hate_speech(message, client)
+    await check_hate_speech(diskvlt, message, client)
 
     text = message.clean_content.lower()
 
