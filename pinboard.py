@@ -89,9 +89,11 @@ async def on_pushpin(reaction, user, client, diskvlt):
 
 
 async def remove_pin(reaction, client):
-    for message in client.messages:
-        if message.channel.name.lower() == "pin_board":
-            if message == reaction.message:
-                try: await client.delete_message(message)
-                except: pass
-                return
+    try:
+        for message in client.messages:
+            if message.channel.name.lower() == "pin_board":
+                if message == reaction.message:
+                    try: await client.delete_message(message)
+                    except: pass
+                    return
+    except: pass
