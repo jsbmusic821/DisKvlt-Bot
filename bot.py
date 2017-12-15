@@ -4,7 +4,6 @@ from discord import Permissions
 import logging
 import asyncio
 import random
-import re
 from datetime import datetime
 from discord import Game, InvalidArgument, HTTPException
 import lyricfetcher
@@ -19,7 +18,14 @@ from bs4 import BeautifulSoup
 from os import system
 from time import sleep
 
+from emojis import *
+from admin_utils import *
+from pinboard import on_pushpin,remove_pin 
+from bookmark import on_bookmark
 from banned import is_banned
+from hatespeech import check_hate_speech
+from image_search import search_for_image
+from globals import *
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Beep, bop, boop...",\
                       command_prefix='!');
@@ -27,29 +33,12 @@ client = commands.Bot(description="Hi, I'm DisKvlt's bot! Beep, bop, boop...",\
 # server
 diskvlt = ""
 
-#emojis
-def create_emoji(_name, _id): return discord.Emoji(name=_name, id=_id, server=diskvlt)
-varg = create_emoji("varg","355715543828791296")
-vargdisapproves = create_emoji("vargdisapproves","355715540410695690")
-varglaugh = create_emoji("varglaugh", "355715534333149184")
-banned = create_emoji("banned", "345751228082421760")
-fenriz = create_emoji("fenriz", "355715536149151754")
-wavefenriz = create_emoji("wavefenriz", "355715539160662021")
-wavedog = create_emoji("wavedog", "364142370935013378")
-ah = create_emoji("ah", "366843615860883476")
-bornagain = create_emoji("bornagain", "338080634646036480")
-brutal = create_emoji("brutal", "355715521410498560")
-dead = create_emoji("dead", "355715555774431232")
-salt = create_emoji("salt", "345758525781442560")
-bookmark_emoji = "\U0001f516"
-pushpin_emoji = "\U0001f4cc"
-
 @client.event
 async def on_ready(): 
     global diskvlt
     for server in client.servers:
-            if server.name.lower() == "diskvlt":
-                diskvlt = server
+        if server.name.lower() == "diskvlt":
+            diskvlt = server
     print("~~~~~~~~~~~~ bot has started... ~~~~~~~~~~~~")
 
        
@@ -57,96 +46,17 @@ async def on_ready():
 # BOOKMARK / PIN
 @client.event
 async def on_reaction_add(reaction, user):
-    
-    try: print("\n" + "Emoji reaction added - User: " + user.name)
-    except: pass
-
-    try:
-        if reaction.emoji == bookmark_emoji:
-            print("Reaction was bookmark!")
-            # if has attachments, it is an uploaded picture
-            try: 
-                json = str(reaction.message.attachments[0])
-                json = json.split("'")
-                try:
-                    print("Trying to bookmark file text, if exists")
-                    await client.send_message(user, reaction.message.clean_content)
-                except: print("exception in on_reaction add: Checkpoint 1")
-                await client.send_message(user, json[5])
-            except:
-                # otherwise it is just text/link
-                await client.send_message(user, reaction.message.clean_content)
-        
-        # --------------------------------------------------------- #
-        
-        elif reaction.emoji == pushpin_emoji:
-            print("Reaction was pushpin!")
-            # the hooligans went and made varg recursive...
-            # have to add a check here to make sure its not the pin board itself
-            if reaction.message.channel.name == "pin_board": return
-
-            i = 0
-            for reaction in reaction.message.reactions:
-                try:
-                    if reaction.emoji == pushpin: i += 1
-                    # it must have already been pinned
-                    if i > 1: 
-                        print("\n \n This has already been pinned! \n \n ")
-                        return
-                except: continue
-            
-            pin_board = ""
-            for channel in diskvlt.channels:
-                if channel.name == "pin_board":
-                    pin_board = channel
-
-            try: 
-                # if has attachments, it is an uploaded picture
-                print("Checking to see if this is a file...")
-                json = str(reaction.message.attachments[0])
-                json = json.split("'")
-                try: 
-                    print("\n" + "Trying to pin file text if exists: " + \
-                        reaction.message.clean_content)
-
-                    # make sure the message hasn't already been pinned
-                    for message in client.messages:
-                        if message.channel.name == "pin_board":
-                            if message.clean_content == reaction.message.clean_content:
-                                return
-                    await client.send_message(pin_board, reaction.message.clean_content)
-                except: pass
-                
-                # make sure the message hasn't already been pinned
-                for message in client.messages:
-                    if message.channel.name == "pin_board":
-                        if message.clean_content == json[5]:
-                            return
-            
-                print("\n" + "Trying to pin the file: " + json[5])
-                await client.send_message(pin_board, json[5])
-            except:
-                print("Error: Not a file! Attemping to post as just text...")
-                # make sure the message hasn't already been pinned
-                for message in client.messages:
-                    if message.channel.name == "pin_board":
-                        if message.clean_content == reaction.message.clean_content:
-                            return
-                await client.send_message(pin_board, reaction.message.clean_content)
-    except: print("ERROR: Checkpoint -1 failed in on_reaction_add")
+    if reaction.emoji == bookmark_emoji:
+        await on_bookmark(reaction, user, client)
+    elif reaction.emoji == pushpin_emoji:
+        await on_pushpin(reaction, user, client, diskvlt)
 
 # Remove Reaction
 @client.event
 async def on_reaction_remove(reaction, user):
     # delete message in #pin_board on removal of pushpin emoji
-    try: 
-        if reaction.emoji == pushpin_emoji:
-            for message in client.messages:
-                if message.channel.name == "pin_board":
-                    if message.clean_content == reaction.message.clean_content:
-                        await client.delete_message(message)
-                        return
-    except: pass
+    if reaction.emoji == pushpin_emoji:
+        await remove_pin(reaction, client)
                 
 
 # Server Welcome
@@ -163,7 +73,7 @@ async def on_member_join(member):
         if channel.name == "bot_zone":
             await client.send_message(channel, member.mention \
                 + "Welcome! I can do a lot of cool things. \n Use `!help`" \
-                + " to find out more!")
+                + " to find out more! " + vargbeanie)
     
 # LYRIC FETCHER
 @client.command(pass_context=True)
@@ -196,46 +106,31 @@ async def trans(ctx, *args):
     t = Translator(from_lang=arr[0],to_lang=arr[1])
     await client.say('```' + t.translate(" ".join(args[1:])) + '```')
 
+# Image
 @client.command(pass_context=True)
 async def image(ctx, *args):
     """Downloads the first image from google images and uploads it as a file"""
-    
-    # because people are idiots
-    words = [
-        "porn", "naked", "botfly", "bot fly", "tits", "shit", "penis", "cock", \
-        "dick", "nude", "baby", "hitler"
-    ]
-    tmp_query = "".join(args)
-    for word in words:
-        if word in tmp_query:
-            await client.add_reaction(ctx.message, vargdisapproves)
-            break
-            await client.send_message(ctx.message.channel, \
-                ctx.message.author.mention + "You've been temporarily " \
-                + "disabled from using commands. ")
-            banned_users.append(ctx.message.author.name)
-            return
-
-    def get_soup(url,header):
-        return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)), "html5lib")
-
-    url="https://www.google.com/search?safe=active&tbm=isch&q=" + "+".join(args)
-    header = {'User-Agent': 'Mozilla/5.0'} 
-    image_url = [a['src'] for a in get_soup(url, header).find_all("img", \
-                            {"src": re.compile("gstatic.com")}, limit=1)][0]
-
-    file = open("/tmp/image.png", 'wb')
-    file.write(urllib.request.urlopen(image_url).read())
-    file.close() 
-    
-    await client.send_file(ctx.message.channel, "/tmp/image.png")
-
+    await search_for_image(ctx, client, args)
 
 # JOINED
 @client.command()
 async def joined(member : discord.Member):
     """Datestamp of user join - Ex: '!joined mitch'"""
     await client.say('{0.name} joined in {0.joined_at}'.format(member))
+
+# Total Messages
+@client.command(pass_context=True)
+async def total(ctx):
+    count = 0
+    for channel in diskvlt.channels:
+        # try:
+        async for message in client.logs_from(channel, limit=1000000):
+            if message.author == ctx.message.author:
+                count += 1
+        # except: continue
+
+    await client.say(ctx.message.author.mention + " has sent " + str(count) \
+                     + " messages on the server")
 
 # AGE
 @client.command(pass_context=True)
@@ -275,24 +170,17 @@ async def metal(ctx, *args):
 @client.command(pass_context=True)
 async def yt(ctx, *args):
     """Search and link a youtube video"""
-
-    # command takes a while, this lets ppl know its working
-
     query = urllib.parse.quote(" ".join(args).lower())
     
-    if "emoji" in query: 
-        return
+    if "emoji" in query: return
 
     url = "https://www.youtube.com/results?search_query=" + query
     html = urllib.request.urlopen(url).read()
     soup = BeautifulSoup(html, "html5lib")
-    i = 0
-    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit=1):
-        i += 1
+    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit = 1):
         if "user" not in vid["href"] and "googleads" not in vid["href"]:
             await client.say('https://www.youtube.com' + vid['href'])
             break
-    print(i)
 
 # Discogs command
 @client.command(pass_context=True)
@@ -431,13 +319,13 @@ async def coinflip(ctx):
 async def ping(ctx):
     """pings bot"""
     msg = await client.say('pong')
-    await asyncio.sleep(10)
+    await asyncio.sleep(5)
     await client.delete_message(msg)
 # PONG... lulz
 @client.command(pass_context=True)
 async def pong(ctx):
     msg = await client.say('Hey, stop that.')
-    await asyncio.sleep(10)
+    await asyncio.sleep(5)
     await client.delete_message(msg)
 
 # RULES
@@ -450,99 +338,42 @@ async def rules(ctx):
 @client.command(pass_context = True)
 async def echo(ctx, *args):
     """(admin) - Ex: '!echo foo' or '!echo channel_name bar'"""
-
-    if ctx.message.author.name == "mitch" or \
-       ctx.message.author.top_role.name.lower() == "admin":
-      
-        for channel in diskvlt.channels:
-            if channel.name.lower() == args[0].lower():
-                await client.send_message(channel, " ".join(args[1:]))
-                return
-        
-        await client.say(" ".join(args))
-    else: await client.say("http://e.lvme.me/xmeh35.jpg")
+    await admin_echo(ctx, client, diskvlt, args)
 
 # Message
 @client.command(pass_context = True)
 async def message(ctx, *args):
-    """(admin) - Ex: '!message user foo'"""
-    if ctx.message.author.name == "mitch" or \
-       ctx.message.author.top_role.name.lower() == "admin":
+   await admin_message(ctx, client, args) 
 
-        for user in client.get_all_members():
-            if user.name.lower() == args[0] or user.nick.lower() == args[0]:
-                await client.send_message(user, " ".join(args[1:]))
-    else: await client.say("http://e.lvme.me/xmeh35.jpg")
-
+# Purge
+@client.command(pass_context = True)
+async def purge(ctx, *args):
+    """(admin) - Ex: '!purge channel user limit'"""
+    await admin_purge(ctx, client, diskvlt, args)
 
 # RESTART
-# @client.command(pass_context=True)
-# async def restart(ctx):
-#     try:
-#         print(ctx.message.author.top_role.name)
-#         if ctx.message.author.top_role.name == "Admin":
-#             message = await client.say("restarting...")
-#             system("cd ~/DisKvlt-Bot && git pull --force && \
-#                 python3.6 ~/DisKvlt-Bot/bot.py " + sys.argv[1] + "&")
-#             sleep(3)
-#             await client.delete_message(message)
-#             await client.say("Varg has restarted. *Let's find out!*")
-#             exit()
-#         else: await client.say("http://e.lvme.me/xmeh35.jpg")
-#     except: pass
-
-# hate speech checks to wake up the mods... /pol/ trolls...
-async def check_hate_speech(message):
-    words = [
-       "nigger", "faggot", "jews", "heil hitler", "1488", "libtard", "cuck", \
-        "build the wall", "kike"
-    ]
-  
-    try:
-        role = message.author.top_role
-        if role is not None:
-            r_name = role.name.lower()
-            if r_name == "bot" or r_name == "mod" or r_name == "admin":
-                return
-    except: pass
- 
-    for word in words:
-        if word in message.clean_content.lower():
-            nick = ""
-
-            try: nick = message.author.nick
-            except: nick = message.author.name
-
-            for channel in diskvlt.channels:
-                if channel.name == "admin_chat":
-                    await client.send_message(channel, \
-                            "Report: " + nick + ' - "' \
-                            + message.clean_content + '"' \
-                            + " - in channel [#" + message.channel.name + "]")
-                    break
-            await client.add_reaction(message,vargdisapproves)
-            break
-            await client.add_reaction(message, banned)
-            return True
-    return False
+@client.command(pass_context=True)
+async def restart(ctx):
+    """(admin) - git pulls from varg's repo and restarts his brain"""
+    await admin_restart(ctx, client)
 
 @client.event
 async def on_message(message):
 
-    if message.clean_content[0] == "!": 
-        await client.send_typing(message.channel)
-    
     # if this is a file with no text, do nothing
     try: 
         if len(message.clean_content) == 0: return
     except: 
         return
-   
+ 
+    if message.clean_content[0] == "!": 
+         await client.send_typing(message.channel)
+  
     # check if user is allowed to use commands
     if await is_banned(message.author.name): return
     else:await client.process_commands(message)
 
-    await check_hate_speech(message)
+    await check_hate_speech(message, client)
 
     text = message.clean_content.lower()
 
@@ -570,13 +401,6 @@ async def on_message(message):
 
     if "emoji" in text and "movie" in text:
         await client.add_reaction(message, banned)
-
-    # these users won't get shill-checked
-    allowed_users = [
-        "mitch", "cyril", "stupid-frenchie", "wraithvomit", "metalhexe", \
-        "vaterhexe", "fallenempire", "fallen-empire", "fallen_empire", \
-        "raukolith", "arsbo", "joutsi666", "plundermaster", "thepowerglove"
-    ]
 
     like_detection = [
         "rock", "i like", "i love", "is good", "is great", "is awesome", \

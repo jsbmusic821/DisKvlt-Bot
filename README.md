@@ -4,7 +4,7 @@ The official code repository for DisKvlt's Discord bot
 
 **Dependencies:**
 
-`pip3 install discord.py lyricfetcher`
+`pip3 install discord.py lyricfetcher html5lib bs4 urllib`
 
 ## made using discord.py:
 

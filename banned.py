@@ -1,9 +1,4 @@
-# These users are banned from using commands:
-banned_users = [
-
-    "asdf"
-
-]
+from globals import banned_users
 
 async def is_banned(name):
     for user in banned_users:
