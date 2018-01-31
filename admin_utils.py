@@ -7,12 +7,12 @@ import asyncio
 async def admin_echo(ctx, client, diskvlt, args):
     if ctx.message.author.name == "mitch" or \
        ctx.message.author.top_role.name.lower() == "admin":
-      
+
         for channel in diskvlt.channels:
             if channel.name.lower() == args[0].lower():
                 await client.send_message(channel, " ".join(args[1:]))
                 return
-        
+
         await client.say(" ".join(args))
     else: await client.send_file(ctx.message.channel, "res/no-power.jpg")
 
@@ -20,10 +20,10 @@ async def admin_echo(ctx, client, diskvlt, args):
 # RESTART
 async def admin_restart(ctx, client):
     role = ""
-    try: 
+    try:
         if ctx.message.author.top_role is not None:
             role = ctx.message.author.top_role.name.lower()
-    except: 
+    except:
         role = "everyone"
 
     if role == "admin":
@@ -71,10 +71,10 @@ async def admin_purge(ctx, client, diskvlt, args):
     try:
         if ctx.message.author.top_role is not None:
             role = ctx.message.author.top_role.name.lower()
-    except: 
+    except:
         role = "everyone"
 
-    if role == "admin":
+    if role == "admin" or role == "mod":
         _limit = 0
         # if no limit is provided, assume no limit
         try: _limit = int(args[2])
@@ -87,7 +87,7 @@ async def admin_purge(ctx, client, diskvlt, args):
             user = args[1].lower()
 
         def is_user(m): return m.author.name.lower() == user
-        
+
         async def execute(channel):
             try:
                 msg = ""
@@ -110,12 +110,12 @@ async def admin_purge(ctx, client, diskvlt, args):
         if args[0].lower() == "all":
             for c in diskvlt.channels:
                 await execute(c)
-        else: 
+        else:
             for c in diskvlt.channels:
                 if c.name == args[0].lower():
                     await execute(c)
-            
-    else: 
+
+    else:
         try: await client.send_file(ctx.message.channel, "res/no-power.jpg")
         except: pass
-        
+
