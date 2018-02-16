@@ -21,7 +21,7 @@ from time import sleep
 from globals import *
 from emojis import *
 from admin_utils import *
-from pinboard import on_pushpin,remove_pin 
+from pinboard import on_pushpin,remove_pin
 from bookmark import on_bookmark
 from banned import is_banned
 from hatespeech import check_hate_speech
@@ -35,14 +35,14 @@ client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http:
 diskvlt = ""
 
 @client.event
-async def on_ready(): 
+async def on_ready():
     global diskvlt
     for server in client.servers:
         if server.name.lower() == "diskvlt":
             diskvlt = server
     print("~~~~~~~~~~~~ bot has started... ~~~~~~~~~~~~")
 
-       
+
 # BOOKMARK / PIN
 @client.event
 async def on_reaction_add(reaction, user):
@@ -57,7 +57,7 @@ async def on_reaction_remove(reaction, user):
     # delete message in #pin_board on removal of pushpin emoji
     if reaction.emoji == pushpin_emoji:
         await remove_pin(reaction.message, client)
-                
+
 
 # Server Welcome
 @client.event
@@ -74,7 +74,7 @@ async def on_member_join(member):
             await client.send_message(channel, member.mention \
                 + " Welcome! I can do a lot of cool things. \n Use `!help`" \
                 + " to find out more! " + str(vargbeanie))
-  
+
 # Metal Archives releases scraper
 @client.command(pass_context=True)
 async def releases(ctx, *args):
@@ -85,7 +85,7 @@ async def releases(ctx, *args):
 @client.command(pass_context=True)
 async def lyrics(ctx, *args):
     """Ex: '!lyrics artist name - song name'"""
-    try: 
+    try:
         arr = '{}'.format(" ".join(args)).split(' - ')
         lyrics = lyricfetcher.get_lyrics('lyricswikia', arr[0], arr[1])
         if lyrics is None or lyrics == 404 or lyrics == "404":
@@ -138,7 +138,7 @@ async def total(ctx):
 
     start_message = await client.say(author.mention \
             + " Working. This may take a while...")
-    
+
     from threading import Thread
     count = 0
     for channel in diskvlt.channels:
@@ -195,7 +195,7 @@ async def metal(ctx, *args):
 async def yt(ctx, *args):
     """Search and link a youtube video"""
     query = urllib.parse.quote(" ".join(args).lower())
-    
+
     if "emoji" in query: return
 
     url = "https://www.youtube.com/results?search_query=" + query
@@ -234,7 +234,7 @@ async def google(ctx,*args):
 async def lmgtfy(ctx, *args):
     """'Let me Google that for you.'"""
     await client.say('http://lmgtfy.com/?q={}'.format("+".join(args)))
- 
+
 
 # DuckDuckGo
 @client.command(pass_context=True)
@@ -256,7 +256,7 @@ async def r(ctx, arg):
 @client.command(pass_context=True)
 async def crispy(ctx):
     """memes"""
-    
+
     i = random.randint(0, 6)
     filename = ""
     if i == 0: filename = "res/when-are-soft.jpg"
@@ -266,10 +266,10 @@ async def crispy(ctx):
     elif i == 4: filename = "res/varg-flakes.jpg"
     elif i == 5: filename = "res/varg-flakes2.png"
     elif i == 6: filename = "res/cornflakes.gif"
-    
+
     await client.send_file(ctx.message.channel, filename)
-    
-    
+
+
 # ITS HAPPENING!
 @client.command(pass_context=True)
 async def itshappening(ctx):
@@ -376,7 +376,7 @@ async def echo(ctx, *args):
 # Message
 @client.command(pass_context = True)
 async def message(ctx, *args):
-   await admin_message(ctx, client, args) 
+   await admin_message(ctx, client, args)
 
 # Purge
 @client.command(pass_context = True)
@@ -411,18 +411,18 @@ async def on_message(message):
             if user.name == "mitch":
                 await client.send_message(user, message.author.mention \
                     + "\n" + "```" + CLEAN_CONTENT + "```")
-                return 
+                return
             # except: continue
 
     # if this is a file with no text, do nothing
-    try: 
+    try:
         if len(message.clean_content) == 0: return
-    except: 
+    except:
         return
- 
-    if message.clean_content[0] == "!": 
+
+    if message.clean_content[0] == "!":
          await client.send_typing(message.channel)
-  
+
     # check if user is allowed to use commands
     if await is_banned(message.author.name): return
     else:await client.process_commands(message)
@@ -449,7 +449,7 @@ async def on_message(message):
             "good evening" in text or "sup fuckers" in text:
         if random.randint(0,1) == 0:
             await client.add_reaction(message, wavefenriz)
-        else: 
+        else:
             await client.add_reaction(message, wavedog)
 
 
@@ -474,13 +474,13 @@ async def on_message(message):
 
     ]
 
-    i_like_list = [ 
+    i_like_list = [
         "whitechapel", "slipknot", "babymetal", "baby metal", "sabaton", \
         "deathcore", "metalcore", "prog metal", "prog", "progmetal", \
         "sunbather", "svnbather", "soggy cereal", "hawaiian pizza"
     ]
-    
-    i_dont_like_list = [ 
+
+    i_dont_like_list = [
         "summmoning", "beverast", "burzum", "black metal", "death metal",
         "wolves in throne room", "nargaroth", "french bm", "atmoblack", \
         "atmosphblack", "atmosph black", "panopticon", "filosofem", "drudkh", \
@@ -495,28 +495,28 @@ async def on_message(message):
         "svnbather", "atmoshit"
     ]
 
-    
 
-        
+
+
     for string in like_detection:
         if string in text:
             for word in i_like_list:
                     if word in text:
-                        await client.add_reaction(message, banned) 
+                        await client.add_reaction(message, banned)
                         return
-    
+
     for string in sucks_detection:
         if string in text:
             for word in i_dont_like_list:
-                if word in text: 
-                    await client.add_reaction(message, banned) 
+                if word in text:
+                    await client.add_reaction(message, banned)
                     return
 
     for string in singular_ban_list:
         if string in text:
-            await client.add_reaction(message, banned) 
+            await client.add_reaction(message, banned)
             return
-        
+
     if "MANOWAR" in message.clean_content:
         await client.add_reaction(message, "🇲")
         await client.add_reaction(message, "🇦")
@@ -525,17 +525,17 @@ async def on_message(message):
         await client.add_reaction(message, "🇼")
         await client.add_reaction(message, "🅰")
         await client.add_reaction(message, "🇷")
-   
+
     elif "amon amarth" in text:
         if "war metal" in text or "viking metal" in text:
-            await client.add_reaction(message, banned) 
-   
+            await client.add_reaction(message, banned)
+
     elif "sabaton" in text and "war metal" in text:
         if "not" not in text:
-            await client.add_reaction(message, banned) 
+            await client.add_reaction(message, banned)
 
     elif "agalloch" in text and "is not" in text and "metal" in text:
-        await client.add_reaction(message, banned) 
+        await client.add_reaction(message, banned)
 
     elif "lamp" in text or "lampening" in text or "lamped" in text \
             or ("let" in text and "find" in text and "out" in text):
@@ -555,40 +555,35 @@ async def on_message(message):
         await client.add_reaction(message, salt)
 
     elif "shut up varg" in text or "stfu varg" in text or "shutup varg" \
-            in text or ("varg" in text and "sucks" in text):
+            in text or ("varg" in text and "sucks" in text) or
+            ("varg is" in text and ("dumb" in text or "stupid" in text)):
         await client.add_reaction(message, vargdisapproves)
 
     elif "ah!" in text:
         await client.add_reaction(message, ah)
 
-    elif text != "brutal" and "brutal" in text:
-        await client.add_reaction(message, brutal)
-
-    elif "reee" in text:
+    elif "reeeee" in text:
         await client.add_reaction(message, bornagain)
 
-    elif "kvlt af" in text:
-        await client.add_reaction(message, dead)
-    
     elif text.count("devin") >= 9:
         await client.send_message(message.channel, "*It's over nine Townsend!*")
 
-    elif "gumby-urienndgmequo" in text:
+    elif "gumby" in text:
         await client.add_reaction(message, "😱")
-        await client.add_reaction(message, banned) 
-   
-    # because some people shill their bands non stop
-    for name in allowed_users:
-        if message.author.name.lower() == name.lower():
-            return
+        await client.add_reaction(message, banned)
 
-    if "my band" in text or "my project" in text \
-    or "project of mine" in text or "my merch" in text \
-    or "my bandcamp" in text:
-        await client.add_reaction(message, "🇸")
-        await client.add_reaction(message, "🇹")
-        await client.add_reaction(message, "🇫")
-        await client.add_reaction(message, "🇺")
+    # because some people shill their bands non stop
+    # for name in allowed_users:
+        # if message.author.name.lower() == name.lower():
+            # return
+
+    # if "my band" in text or "my project" in text \
+    # or "project of mine" in text or "my merch" in text \
+    # or "my bandcamp" in text:
+    #     await client.add_reaction(message, "🇸")
+    #     await client.add_reaction(message, "🇹")
+    #     await client.add_reaction(message, "🇫")
+    #     await client.add_reaction(message, "🇺")
 
 @client.command()
 async def bookmark(ctx):
