@@ -555,7 +555,7 @@ async def on_message(message):
         await client.add_reaction(message, salt)
 
     elif "shut up varg" in text or "stfu varg" in text or "shutup varg" \
-            in text or ("varg" in text and "sucks" in text) or
+            in text or ("varg" in text and "sucks" in text) or \
             ("varg is" in text and ("dumb" in text or "stupid" in text)):
         await client.add_reaction(message, vargdisapproves)
 
