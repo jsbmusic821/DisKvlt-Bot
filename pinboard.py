@@ -41,8 +41,8 @@ async def on_pushpin(reaction, user, client, diskvlt):
     #
     #
     #     -  -  - Instead of the above, this is a hacky workaround - - -
-    async for _message in client.logs_from(pin_board, limit=100):
-        if _message.embeds is None or len(_message.embeds) == 0:
+    if reaction.message.embeds is None or len(reaction.message.embeds) == 0:
+        async for _message in client.logs_from(pin_board, limit=100):
             if reaction.message.author.name.lower() in _message.clean_content.lower():
                 if reaction.message.content.lower() in _message.clean_content.lower():
                     print("Already pinned!")
