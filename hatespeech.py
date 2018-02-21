@@ -12,9 +12,8 @@ async def check_hate_speech(diskvlt, message, client):
             role = message.author.top_role
             if role is not None:
                 r_name = role.name.lower()
-                if r_name == "bot":
-                    or r_name == "mod" or r_name == "admin":
-                        return
+                if r_name == "bot" or r_name == "mod" or r_name == "admin":
+                    return
         except:
             pass
 

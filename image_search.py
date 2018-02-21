@@ -3,6 +3,7 @@ import urllib
 import re
 from emojis import *
 from globals import *
+import asyncio
 
 async def search_for_image(ctx, client, args):
     # because people are idiots
@@ -24,12 +25,14 @@ async def search_for_image(ctx, client, args):
         return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)), "html5lib")
 
     url="https://www.google.com/search?safe=active&tbm=isch&q=" + "+".join(args)
-    header = {'User-Agent': 'Mozilla/5.0'} 
+    header = {'User-Agent': 'Mozilla/5.0'}
     image_url = [a['src'] for a in get_soup(url, header).find_all("img", \
                             {"src": re.compile("gstatic.com")}, limit=1)][0]
 
     file = open("/tmp/image.png", 'wb')
     file.write(urllib.request.urlopen(image_url).read())
-    file.close() 
-    
-    await client.send_file(ctx.message.channel, "/tmp/image.png")
+    file.close()
+
+    msg = await client.send_file(ctx.message.channel, "/tmp/image.png")
+    await asyncio.sleep(15)
+    await client.delete_message(msg)
