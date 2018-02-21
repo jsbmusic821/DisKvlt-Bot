@@ -33,6 +33,13 @@ async def search_for_image(ctx, client, args):
     file.write(urllib.request.urlopen(image_url).read())
     file.close()
 
-    msg = await client.send_file(ctx.message.channel, "/tmp/image.png")
-    await asyncio.sleep(15)
-    await client.delete_message(msg)
+    wraith = False
+    for role in ctx.message.author.roles:
+        if role.name.lower() == "wraithvomit":
+            wraith = True
+            msg = await client.send_file(ctx.message.channel, "/tmp/image.png")
+            await asyncio.sleep(15)
+            await client.delete_message(msg)
+
+    if not wraith:
+        await client.send_file(ctx.message.channel, "/tmp/image.png")
