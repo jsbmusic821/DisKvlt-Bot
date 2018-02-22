@@ -3,11 +3,7 @@ from emojis import pushpin_emoji
 import requests
 
 async def on_pushpin(reaction, user, client, diskvlt):
-    print("Reaction was pushpin!")
-
-    # try:
     if reaction.message.clean_content is None:
-        print("Content is none!")
         return
 
     # the hooligans went and made varg recursive...
@@ -41,26 +37,26 @@ async def on_pushpin(reaction, user, client, diskvlt):
     #
     #
     #     -  -  - Instead of the above, this is a hacky workaround - - -
-    if reaction.message.embeds is None or len(reaction.message.embeds) == 0:
-        async for _message in client.logs_from(pin_board, limit=100):
-            if reaction.message.author.name.lower() in _message.clean_content.lower():
-                if reaction.message.content.lower() in _message.clean_content.lower():
-                    print("Already pinned!")
-                    return
+
+    # -------------------------------------------------------
+    # if reaction.message.embeds is None or len(reaction.message.embeds) == 0:
+        # async for _message in client.logs_from(pin_board, limit=40):
+        #     if len(reaction.message.clean_content) > 1:
+        #         if reaction.message.author.name.lower() in _message.clean_content.lower():
+        #             if reaction.message.clean_content.lower() in _message.clean_content.lower():
+        #                 return
+    # -------------------------------------------------------
     #-------------------------------------------------------
 
 
-    try:
-        # make sure the message hasn't already been pinned
-        for message in client.messages:
-            if message.channel == pin_board:
-                if reaction.message.clean_content.lower() \
-                in message.clean_content.lower():
-                    if reaction.message.author.mention \
-                    in message.clean_content:
-                        return
-    except:
-        pass
+    # make sure the message hasn't already been pinned
+    for message in client.messages:
+        if message.channel == pin_board:
+            if reaction.message.clean_content.lower() \
+            in message.clean_content.lower():
+                if reaction.message.author.mention \
+                in message.clean_content:
+                    return
 
     # date stamp
     date = datetime.now().strftime('%a %d %b %y')
@@ -70,7 +66,7 @@ async def on_pushpin(reaction, user, client, diskvlt):
         json = str(reaction.message.attachments[0]).split("'")
 
 
-        file = open('/tmp/image1.png', 'wb')
+        file = open('/tmp/image2.png', 'wb')
         file.write(requests.get(json[5]).content)
         file.close()
 
@@ -85,8 +81,7 @@ async def on_pushpin(reaction, user, client, diskvlt):
                     + '```' + reaction.message.clean_content + '```'
 
         # Post the file
-        try: await client.send_file(pin_board, "/tmp/image1.png", content=text)
-        except: pass
+        await client.send_file(pin_board, "/tmp/image2.png", content=text)
     except:
         # if the above failed, its only text -- no file
         try:
@@ -103,9 +98,6 @@ async def on_pushpin(reaction, user, client, diskvlt):
             await client.send_message(pin_board, text)
         except:
             pass
-    # except:
-        # pass
-
 
 async def remove_pin(reaction, client):
     try:

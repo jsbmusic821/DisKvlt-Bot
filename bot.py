@@ -17,6 +17,7 @@ import urllib
 from bs4 import BeautifulSoup
 from os import system
 from time import sleep
+from discord import opus
 
 from globals import *
 from emojis import *
@@ -30,6 +31,8 @@ from releases import get_releases
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
+
+opus.load_opus('libopus.so.0')
 
 # server
 diskvlt = ""
@@ -345,6 +348,25 @@ async def coinflip(ctx):
 # @client.command(pass_context=True)
 # async def moomin(ctx):
 #     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
+
+# YouTube in Voice-Chat
+@client.command(pass_context=True)
+async def ytvc(ctx, *args):
+    """Plays youtube video in voice-chat"""
+    query = urllib.parse.quote(" ".join(args).lower())
+
+    url = "https://www.youtube.com/results?search_query=" + query
+    html = urllib.request.urlopen(url).read()
+    soup = BeautifulSoup(html, "html5lib")
+    LINK_URL=""
+    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit = 1):
+        if "user" not in vid["href"] and "googleads" not in vid["href"]:
+            LINK_URL='https://www.youtube.com' + vid['href']
+            break
+
+    vc = await client.join_voice_channel(ctx.message.author.voice_channel)
+    player = await vc.create_ytdl_player(LINK_URL)
+    player.start
 
 # PING
 @client.command(pass_context=True)
