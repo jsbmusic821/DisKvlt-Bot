@@ -34,13 +34,14 @@ async def search_for_image(ctx, client, args):
     file.close()
 
     wraith = False
-    sleep_time = 0
     for role in ctx.message.author.roles:
         if role.name.lower() == "wraithvomit":
-            sleep_time = 15
+            wraith = True
 
     if not wraith:
-        sleep_time = 45
+        sleep_time = 60
+    else:
+        sleep_time = 15
 
     msg = await client.send_file(ctx.message.channel, "/tmp/image.png")
     await asyncio.sleep(sleep_time)
