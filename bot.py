@@ -197,14 +197,12 @@ async def metal(ctx, *args):
 @client.command(pass_context=True)
 async def yt(ctx, *args):
     """Search and link a youtube video"""
-    query = urllib.parse.quote(" ".join(args).lower())
+    url = "https://www.youtube.com/results?search_query=" + \
+            urllib.parse.quote(" ".join(args).lower())
 
-    if "emoji" in query: return
-
-    url = "https://www.youtube.com/results?search_query=" + query
-    html = urllib.request.urlopen(url).read()
-    soup = BeautifulSoup(html, "html5lib")
-    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit = 1):
+    for vid in BeautifulSoup(urllib.request.urlopen(url).read(), \
+            "html5lib").findAll(attrs={'class': 'yt-uix-tile-link'}, \
+            limit = 1):
         if "user" not in vid["href"] and "googleads" not in vid["href"]:
             await client.say('https://www.youtube.com' + vid['href'])
             break
