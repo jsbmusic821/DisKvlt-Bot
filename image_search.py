@@ -45,4 +45,3 @@ async def search_for_image(ctx, client, args):
         msg = await client.send_file(ctx.message.channel, "/tmp/image.png")
         await asyncio.sleep(sleep_time)
         await client.delete_message(msg)
-

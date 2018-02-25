@@ -28,6 +28,7 @@ from banned import is_banned
 from hatespeech import check_hate_speech
 from image_search import search_for_image
 from releases import get_releases
+from bandpic import get_band_pic
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
@@ -67,8 +68,7 @@ async def on_reaction_remove(reaction, user):
 async def on_member_join(member):
     i = 0
     for member in diskvlt.members: i += 1
-
-    msg = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 ' + member.mention + '!**'
+    msg = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 ' + member.mention + '!** ' + str(wavedog)
     await client.send_message(diskvlt, msg + "\n" + \
                 "There are now **" + str(i) + "** members in the server!")
 
@@ -77,12 +77,19 @@ async def on_member_join(member):
             await client.send_message(channel, member.mention \
                 + " Welcome! I can do a lot of cool things. \n Use `!help`" \
                 + " to find out more! " + str(vargbeanie))
+            break
 
 # Metal Archives releases scraper
 @client.command(pass_context=True)
 async def releases(ctx, *args):
     """Scrapes metal-archives for relases from <band>"""
     await get_releases(ctx, client, args)
+
+# Metal Archives band pic scraper
+@client.command(pass_context=True)
+async def band(ctx, *args):
+    """Scrapes metal-archives for band pic of <band>"""
+    await get_band_pic(ctx, client, args)
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
@@ -133,31 +140,32 @@ async def joined(member : discord.Member):
     await client.say('{0.name} joined in {0.joined_at}'.format(member))
 
 # Total Messages
-@client.command(pass_context=True)
-async def total(ctx):
-    """Calculates total number of messages sent by you on the server - Please don't abuse this"""
+# ---- this just gets totally abused
+# @client.command(pass_context=True)
+# async def total(ctx):
+#     """Calculates total number of messages sent by you on the server - Please don't abuse this"""
 
-    author = ctx.message.author
+#     author = ctx.message.author
 
-    start_message = await client.say(author.mention \
-            + " Working. This may take a while...")
+#     start_message = await client.say(author.mention \
+#             + " Working. This may take a while...")
 
-    from threading import Thread
-    count = 0
-    for channel in diskvlt.channels:
-        if channel.type == discord.ChannelType.text:
-            # try:
-            print("Starting to count messages in: " + channel.name)
-            async for message in client.logs_from(channel, limit=100000000):
-                if message.author == author:
-                    count += 1
-                    print(count)
-            # except: continue
+#     from threading import Thread
+#     count = 0
+#     for channel in diskvlt.channels:
+#         if channel.type == discord.ChannelType.text:
+#             # try:
+#             print("Starting to count messages in: " + channel.name)
+#             async for message in client.logs_from(channel, limit=100000000):
+#                 if message.author == author:
+#                     count += 1
+#                     print(count)
+#             # except: continue
 
-    await client.delete_message(start_message)
-    await client.say(author.mention + " has sent " + str(count) \
-                     + " messages on the server")
-    print("Finished calculating total for user: " + author.mention)
+#     await client.delete_message(start_message)
+#     await client.say(author.mention + " has sent " + str(count) \
+#                      + " messages on the server")
+#     print("Finished calculating total for user: " + author.mention)
 
 # AGE
 @client.command(pass_context=True)
@@ -176,8 +184,6 @@ async def members(ctx):
     i = 0
     for member in diskvlt.members: i += 1
     await client.say("There are **" + str(i) + "** members in the server!")
-
-
 
 #################### WEBSITE SEARCHERS #################################
 # Wiki command
@@ -288,16 +294,6 @@ async def cat(ctx):
     r = r.replace("\\","")
     url = json.loads(r)["file"]
     await client.say(url)
-    i = random.randint(0, 29)
-    if i == 0:
-        await asyncio.sleep(3)
-        await client.say("MEOW.")
-    elif i == 1:
-        await asyncio.sleep(3)
-        await client.say("I love cats.")
-    elif i == 2:
-        await asyncio.sleep(3)
-        await client.say("*purr...*")
 
 # RANDOM DOG
 @client.command(pass_context=True)
@@ -308,8 +304,6 @@ async def dog(ctx):
     r = r.replace("b'","")
     r = r.replace("'","")
     await client.say("https://random.dog/" + r)
-    if random.randint(0,29) == 0:
-        await client.say("cats are better...")
 
 # RANDOM CAGE
 @client.command(pass_context=True)
@@ -419,20 +413,19 @@ async def restart(ctx):
 @client.event
 async def on_message(message):
 
-    CLEAN_CONTENT = message.clean_content
-
     # if someone pm's varg, relay the content to me
     if message.channel.type == discord.ChannelType.private \
        and message.author != client.user \
        and message.author.name != "mitch" \
        and message.author.name != "Botty McBotFace":
         for user in client.get_all_members():
-            # try:
-            if user.name == "mitch":
-                await client.send_message(user, message.author.mention \
-                    + "\n" + "```" + CLEAN_CONTENT + "```")
-                return
-            # except: continue
+            try:
+                if user.name == "mitch":
+                    await client.send_message(user, message.author.mention \
+                        + "\n" + message.clean_content)
+                    return
+            except:
+                continue
 
     # if this is a file with no text, do nothing
     try:
@@ -444,8 +437,10 @@ async def on_message(message):
          await client.send_typing(message.channel)
 
     # check if user is allowed to use commands
-    if await is_banned(message.author.name): return
-    else:await client.process_commands(message)
+    if await is_banned(message.author.name):
+        return
+    else:
+        await client.process_commands(message)
 
     await check_hate_speech(diskvlt, message, client)
 
@@ -453,7 +448,8 @@ async def on_message(message):
 
     cmd = text.split(" ")[0]
     if cmd == ".fm" or cmd == ".fmyt" or cmd == "!fm" or cmd == "!fmyt":
-        await client.send_message(message.channel, message.author.mention + " Who do you think I am, UB3RB0T?")
+        await client.send_message(message.channel, message.author.mention + \
+                " Who do you think I am, UB3RB0T?")
 
     elif cmd[0] == "." and ("trans" in cmd or 'yt' in cmd or 'bc' in cmd or \
         'metal' in cmd or 'ddg' in cmd or 'google' in cmd or 'lyric' in \
@@ -507,16 +503,13 @@ async def on_message(message):
         "manowar", "2nd wave sucks", "usbm sucks", "2nd wave black metal", \
         "2nd wave bm", "cascadian", "wolves in the throne room", "wittr", \
         "crispy cereal", "crispy cornflakes", "3rd wave", "linux sucks", \
-        "ds sucks", "dungeon synth", "summoning"
+        "ds sucks", "dungeon synth", "summoning", "war metal"
     ]
 
     singular_ban_list = [
         "baby metal", "babymetal", "baby_metal", "slipknot", "sunbather", \
         "svnbather", "atmoshit"
     ]
-
-
-
 
     for string in like_detection:
         if string in text:

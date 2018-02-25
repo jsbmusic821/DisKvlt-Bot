@@ -18,7 +18,7 @@ class Line():
     def concat(self):
         line = self.title + " - " + self.year + " - (" \
               + self.type + ")"
-            
+
         return(line.strip())
 
 async def error_message(client):
@@ -27,7 +27,7 @@ async def error_message(client):
         await client.delete_message(msg)
 
 async def get_releases(ctx, client, args):
-    try: 
+    try:
         ID = ""
         url = ("https://www.metal-archives.com/bands/" + "_".join(args)).lower()
 
@@ -86,13 +86,13 @@ async def get_releases(ctx, client, args):
 
         for line in lines:
             # skip whitespace / garble
-            if len(line) < 2: continue 
-            
+            if len(line) < 2: continue
+
             # check if year
             match = re.match(r'.*[1-3][0-9]{3}', line)
             if match is not None:
-                year = match.group(0) 
-        
+                year = match.group(0)
+
             # get type
             elif line == "Compilation": type = line
             # elif line == "Single": type = line
@@ -118,7 +118,7 @@ async def get_releases(ctx, client, args):
             if len(buffer) == 0: buffer = "```"
             buffer = buffer + line.concat() + "\n"
 
-            if len(buffer) > (1996 - len(buffer)) or count == len(formatted_lines): 
+            if len(buffer) > (1996 - len(buffer)) or count == len(formatted_lines):
                 buffer = buffer + "```"
                 buffers.append(buffer)
                 buffer = ""
@@ -126,14 +126,14 @@ async def get_releases(ctx, client, args):
 
         msgs = []
         for buffer in buffers:
-            try: 
-                msg = await client.send_message(ctx.message.channel, buffer) 
+            try:
+                msg = await client.send_message(ctx.message.channel, buffer)
                 msgs.append(msg)
             except:
                 await client.say("Error: Couldn't print result. Blame mitch")
 
 
-        try: 
+        try:
             if globals.debug: await client.say("Starting deletion timer...")
             await asyncio.sleep(15)
             count = 0
@@ -141,25 +141,10 @@ async def get_releases(ctx, client, args):
                 count += 1
                 if globals.debug: await client.say("Deleting message #" + str(count))
                 await client.delete_message(msg)
-        except: 
+        except:
             await client.say("Error: couldn't delete messages. Pls no spam...")
     except:
-        await error_message(client) 
+        await error_message(client)
 
 
-# ----------- DOWNLOAD BAND IMAGE ------------------------- #
 
-# file.write(image)
-# file.close()
-
-# url = "https://www.metal-archives.com/bands/burzum"
-
-# image_urls = [a['src'] for a in get_soup(url, header).find_all("img")]
-
-
-# file = open("image.png", 'wb')
-
-# image = urllib.request.urlopen(image_urls[2]).read()
-
-# file.write(image)
-# file.close()
