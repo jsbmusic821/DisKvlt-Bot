@@ -20,6 +20,7 @@ from time import sleep
 from discord import opus
 
 from globals import *
+import globals
 from emojis import *
 from admin_utils import *
 from pinboard import on_pushpin,remove_pin
@@ -184,6 +185,18 @@ async def members(ctx):
     i = 0
     for member in diskvlt.members: i += 1
     await client.say("There are **" + str(i) + "** members in the server!")
+
+
+# Debug
+@client.command(pass_context=True)
+async def ban(ctx, args):
+    """(admin) - Ex: '!ban user'"""
+    try:
+        if ctx.message.author.name == "mitch" or \
+            ctx.message.author.top_role.name.lower() == "admin":
+                globals.banned_users.add(" ".join(args))
+    except:
+        pass
 
 #################### WEBSITE SEARCHERS #################################
 # Wiki command
@@ -437,10 +450,17 @@ async def on_message(message):
          await client.send_typing(message.channel)
 
     # check if user is allowed to use commands
-    if await is_banned(message.author.name):
-        return
-    else:
-        await client.process_commands(message)
+    try:
+        if await is_banned(message.author.display_name) or \
+                await is_banned(message.author.name):
+            return
+        else:
+            await client.process_commands(message)
+    except:
+        if await is_banned(message.author.name):
+            return
+        else:
+            await client.process_commands(message)
 
     await check_hate_speech(diskvlt, message, client)
 
