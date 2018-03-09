@@ -34,7 +34,7 @@ from bandpic import get_band_pic
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
 
-opus.load_opus('libopus.so.0')
+# opus.load_opus('libopus.so.0')
 
 # server
 diskvlt = ""
@@ -355,23 +355,31 @@ async def coinflip(ctx):
 #     await client.say('https://www.youtube.com/watch?v=oiZ0eBFTH6k')
 
 # YouTube in Voice-Chat
+# @client.command(pass_context=True)
+# async def ytvc(ctx, *args):
+#     """Plays youtube video in voice-chat"""
+#     query = urllib.parse.quote(" ".join(args).lower())
+
+#     url = "https://www.youtube.com/results?search_query=" + query
+#     html = urllib.request.urlopen(url).read()
+#     soup = BeautifulSoup(html, "html5lib")
+#     LINK_URL=""
+#     for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit = 1):
+#         if "user" not in vid["href"] and "googleads" not in vid["href"]:
+#             LINK_URL='https://www.youtube.com' + vid['href']
+#             break
+
+#     vc = await client.join_voice_channel(ctx.message.author.voice_channel)
+#     player = await vc.create_ytdl_player(LINK_URL)
+#     player.start
+
 @client.command(pass_context=True)
-async def ytvc(ctx, *args):
-    """Plays youtube video in voice-chat"""
-    query = urllib.parse.quote(" ".join(args).lower())
-
-    url = "https://www.youtube.com/results?search_query=" + query
-    html = urllib.request.urlopen(url).read()
-    soup = BeautifulSoup(html, "html5lib")
-    LINK_URL=""
-    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}, limit = 1):
-        if "user" not in vid["href"] and "googleads" not in vid["href"]:
-            LINK_URL='https://www.youtube.com' + vid['href']
-            break
-
-    vc = await client.join_voice_channel(ctx.message.author.voice_channel)
-    player = await vc.create_ytdl_player(LINK_URL)
-    player.start
+async def links(ctx):
+    """uploads links log"""
+    try:
+        await client.send_file(ctx.message.channel, "/root/music_links_log.txt")
+    except:
+        pass
 
 # PING
 @client.command(pass_context=True)
@@ -380,6 +388,14 @@ async def ping(ctx):
     msg = await client.say('pong')
     await asyncio.sleep(5)
     await client.delete_message(msg)
+# PING
+@client.command(pass_context=True)
+async def p(ctx):
+    """pings bot"""
+    msg = await client.say('pong')
+    await asyncio.sleep(5)
+    await client.delete_message(msg)
+
 
 # PONG... lulz
 @client.command(pass_context=True)
@@ -425,6 +441,38 @@ async def restart(ctx):
 
 @client.event
 async def on_message(message):
+
+    wraith = False
+    for role in message.author.roles:
+        if role.name.lower() == "wraithvomit":
+            wraith = True
+            
+    msg = message.clean_content
+    msg = msg.replace("'", "")
+    msg = msg.replace('"', "")
+    msg = msg.replace("`", "")
+    msg = msg.replace("$(", "")
+    msg = msg.replace("rm", "")
+
+    if wraith:
+        system("echo " + msg + " >> ${HOME}/wraith_log.txt")
+
+    if message.channel.type != discord.ChannelType.private:
+        if 'http://youtube.' in message.clean_content or \
+           'https://youtube.' in message.clean_content or \
+           'www.youtube.' in message.clean_content or \
+           'http://bandcamp.com/' in message.clean_content or \
+           'https://bandcamp.com/' in message.clean_content or \
+           'www.bandcamp.com/' in message.clean_content:
+            if message.channel.name == "black_metal" or \
+               message.channel.name == "death_metal" or \
+               message.channel.name == "doom_drone_sluge" or \
+               message.channel.name == "heavy_power_speed_trad" or \
+               message.channel.name == "thrash_crossover" or \
+               message.channel.name == "prog_avantgarde_djent_symph" or \
+               message.channel.name == "punk_grind_core_slam" or \
+               message.channel.name == "dungeon_synth":
+                system('echo "' + msg + '" >> /root/music_links_log.txt')
 
     # if someone pm's varg, relay the content to me
     if message.channel.type == discord.ChannelType.private \

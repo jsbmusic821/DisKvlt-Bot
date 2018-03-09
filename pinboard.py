@@ -39,13 +39,12 @@ async def on_pushpin(reaction, user, client, diskvlt):
     #     -  -  - Instead of the above, this is a hacky workaround - - -
 
     # -------------------------------------------------------
-    # if reaction.message.embeds is None or len(reaction.message.embeds) == 0:
-        # async for _message in client.logs_from(pin_board, limit=40):
-        #     if len(reaction.message.clean_content) > 1:
-        #         if reaction.message.author.name.lower() in _message.clean_content.lower():
-        #             if reaction.message.clean_content.lower() in _message.clean_content.lower():
-        #                 return
-    # -------------------------------------------------------
+    if reaction.message.embeds is None or len(reaction.message.embeds) == 0:
+        async for _message in client.logs_from(pin_board, limit=40):
+            if len(reaction.message.clean_content) > 1:
+                if reaction.message.author.name.lower() in _message.clean_content.lower():
+                    if reaction.message.clean_content.lower() in _message.clean_content.lower():
+                        return
     #-------------------------------------------------------
 
 
