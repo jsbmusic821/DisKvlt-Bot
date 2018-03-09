@@ -24,21 +24,6 @@ async def on_pushpin(reaction, user, client, diskvlt):
         NAME = user.name
 
     # ----------- Prevent multiple pinnings -----------------
-    # This isn't working...
-    # For whatever reason, the length of reactions.message.reactions
-    # is always 1, no matter how many reactions there really are.
-    # i = 0
-    # for reaction in reaction.message.reactions:
-    #     if reaction.emoji == pushpin_emoji:
-    #         i += 1
-    # if i > 1:
-    #     print("\n \n This has already been pinned! \n \n ")
-    #     return
-    #
-    #
-    #     -  -  - Instead of the above, this is a hacky workaround - - -
-
-    # -------------------------------------------------------
     if reaction.message.embeds is None or len(reaction.message.embeds) == 0:
         async for _message in client.logs_from(pin_board, limit=40):
             if len(reaction.message.clean_content) > 1:
@@ -47,39 +32,41 @@ async def on_pushpin(reaction, user, client, diskvlt):
                         return
     #-------------------------------------------------------
 
-
-    # make sure the message hasn't already been pinned
-    for message in client.messages:
-        if message.channel == pin_board:
-            if reaction.message.clean_content.lower() \
-            in message.clean_content.lower():
-                if reaction.message.author.mention \
-                in message.clean_content:
-                    return
-
     # date stamp
     date = datetime.now().strftime('%a %d %b %y')
 
     try:
         # if has attachments, it is an uploaded picture
-        json = str(reaction.message.attachments[0]).split("'")
-
+        try:
+            json = str(reaction.message.attachments[0]).split("'")
+        except:
+            try:
+                json = str(reaction.message.attachments[1]).split("'")
+            except:
+                json = str(reaction.message.attachments[2]).split("'")
 
         file = open('/tmp/image2.png', 'wb')
-        file.write(requests.get(json[5]).content)
+        try:
+            image = requests.get(json[5]).content
+        except:
+            try:
+                image = requests.get(json[4]).content
+            except:
+                try:
+                    image = requests.get(json[3]).content
+                except:
+                    pass
+
+        file.write(image)
         file.close()
 
-        # if the user also posted text with this message, post it
-        # for some reason discord uploads have some weird 1 character long
-        # text. Not sure what it is, it's not a \n or " "
         text = "From " + reaction.message.author.mention \
                 + "  ~  " + date + reaction.message.clean_content
-        if len(reaction.message.clean_content) > 1:
-            text = "From " + reaction.message.author.mention  + "  ~  " \
-                    + date + "\n" \
-                    + '```' + reaction.message.clean_content + '```'
+        if len(reaction.message.clean_content) > 2:
+            text = "From " + reaction.message.author.mention \
+                + "  ~  " + date + "\n" + '```' + \
+                reaction.message.clean_content + '```'
 
-        # Post the file
         await client.send_file(pin_board, "/tmp/image2.png", content=text)
     except:
         # if the above failed, its only text -- no file

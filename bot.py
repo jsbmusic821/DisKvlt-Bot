@@ -443,9 +443,9 @@ async def restart(ctx):
 async def on_message(message):
 
     wraith = False
-    for role in message.author.roles:
-        if role.name.lower() == "wraithvomit":
-            wraith = True
+    if "wraith" in message.author.name.lower() or \
+        "wraith" in message.author.display_name.lower():
+        wraith = True
             
     msg = message.clean_content
     msg = msg.replace("'", "")

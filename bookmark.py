@@ -9,9 +9,8 @@ async def on_bookmark(reaction, user, client):
 
     # if has attachments, it is an uploaded picture
     try: 
-        json = str(reaction.message.attachments[0])
-        json = json.split("'")
-        
+        json = str(reaction.message.attachments[0]).split("'")
+
         file = open('/tmp/image2.png', 'wb')
         file.write(requests.get(json[5]).content)
         file.close()
