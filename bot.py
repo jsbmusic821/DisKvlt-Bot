@@ -377,7 +377,7 @@ async def coinflip(ctx):
 async def links(ctx):
     """uploads links log"""
     try:
-        await client.send_file(ctx.message.channel, "/root/music_links_log.txt")
+        await client.send_file(ctx.message.channel, "~/music_links_log.txt")
     except:
         pass
 
@@ -455,7 +455,7 @@ async def on_message(message):
     msg = msg.replace("rm", "")
 
     if wraith:
-        system("echo " + msg + " >> ${HOME}/wraith_log.txt")
+        system("echo " + msg + " >> ~/wraith_log.txt")
 
     if message.channel.type != discord.ChannelType.private:
         if 'http://youtube.' in message.clean_content or \
@@ -472,7 +472,7 @@ async def on_message(message):
                message.channel.name == "prog_avantgarde_djent_symph" or \
                message.channel.name == "punk_grind_core_slam" or \
                message.channel.name == "dungeon_synth":
-                system('echo "' + msg + '" >> /root/music_links_log.txt')
+                system('echo "' + msg + '" >> ~/music_links_log.txt')
 
     # if someone pm's varg, relay the content to me
     if message.channel.type == discord.ChannelType.private \
