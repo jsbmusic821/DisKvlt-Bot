@@ -35,6 +35,7 @@ client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http:
                       command_prefix='!');
 
 # opus.load_opus('libopus.so.0')
+music_links_log="/home/banana/music_links_log.txt"
 
 # server
 diskvlt = ""
@@ -377,7 +378,7 @@ async def coinflip(ctx):
 async def links(ctx):
     """uploads links log"""
     try:
-        await client.send_file(ctx.message.channel, "~/music_links_log.txt")
+        await client.send_file(ctx.message.channel, music_links_log)
     except:
         pass
 
@@ -472,7 +473,7 @@ async def on_message(message):
                message.channel.name == "prog_avantgarde_djent_symph" or \
                message.channel.name == "punk_grind_core_slam" or \
                message.channel.name == "dungeon_synth":
-                system('echo "' + msg + '" >> ~/music_links_log.txt')
+                system('echo "' + msg + '" >> ' + music_links_log)
 
     # if someone pm's varg, relay the content to me
     if message.channel.type == discord.ChannelType.private \
