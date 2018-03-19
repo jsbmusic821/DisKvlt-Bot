@@ -69,7 +69,7 @@ async def on_reaction_remove(reaction, user):
 @client.event
 async def on_member_join(member):
     i = 0
-    for member in diskvlt.members: i += 1
+    for m in diskvlt.members: i += 1
     msg = '**𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖙𝖔 𝖙𝖍𝖊 𝖘𝖊𝖗𝖛𝖊𝖗 ' + member.mention + '!** ' + str(wavedog)
     await client.send_message(diskvlt, msg + "\n" + \
                 "There are now **" + str(i) + "** members in the server!")
