@@ -4,7 +4,9 @@ The official code repository for DisKvlt's Discord bot
 
 **Dependencies:**
 
-`pip3 install discord.py lyricfetcher html5lib bs4 translate libnacl pysodium libopus`
+`pip3 install discord.py lyricfetcher html5lib bs4 translate libnacl pysodium`
+
+apt install libopus
 
 ## made using discord.py:
 
