@@ -100,12 +100,16 @@ async def admin_purge(ctx, client, diskvlt, args):
                 if len(deleted) > 0:
                     msg = await client.send_message(channel, "Deleted **" + str(len(deleted)) \
                         + "** messages from channel: " + ctx.message.channel.name)
+                    try: await asyncio.sleep(1000)
+                    except: pass
+                    try: await client.delete_message(msg)
+                    except: pass
                 else:
                     msg = await client.send_message(channel, "No messages were deleted.")
-                try: await asyncio.sleep(10)
-                except: pass
-                try: await client.delete_message(msg)
-                except: pass
+                    try: await asyncio.sleep(5)
+                    except: pass
+                    try: await client.delete_message(msg)
+                    except: pass
             except:
                 msg = await client.say("Error: Did you try to purge too" \
                                  + " too many messages? Or too old?")
