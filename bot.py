@@ -218,12 +218,6 @@ async def metal(ctx, *args):
 async def yt(ctx, *args):
     """Search and link a youtube video"""
 
-# ------------------------------------------------------- 
-    await client.say('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-    return
-# ------------------------------------------------------- 
-
-
     url = "https://www.youtube.com/results?search_query=" + \
             urllib.parse.quote(" ".join(args).lower())
 
@@ -449,13 +443,6 @@ async def restart(ctx):
 
 @client.event
 async def on_message(message):
-
-    # ------------------------------------------------------- 
-    from random import randint
-    if randint(0,4) = 1:
-        await client.say('no')
-        return
-    # ------------------------------------------------------- 
 
     wraith = False
     if "wraith" in message.author.name.lower() or \

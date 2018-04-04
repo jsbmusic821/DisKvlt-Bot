@@ -79,7 +79,7 @@ async def admin_purge(ctx, client, diskvlt, args):
         _limit = 0
         # if no limit is provided, assume no limit
         try: _limit = int(args[2])
-        except: _limit = 10000
+        except: _limit = 1000
 
         user = ""
         if args[1].lower() == "bot" or args[1].lower() == "varg":
@@ -87,7 +87,11 @@ async def admin_purge(ctx, client, diskvlt, args):
         else:
             user = args[1].lower()
 
-        def is_user(m): return m.author.name.lower() == user
+        def is_user(m): 
+            if args[1].lower() == 'all' or args[1] == '*':
+                return True
+            else:
+                return m.author.name.lower() == user
 
         async def execute(channel):
             try:
@@ -108,7 +112,7 @@ async def admin_purge(ctx, client, diskvlt, args):
                 await asyncio.sleep(10)
                 await client.delete_message(msg)
 
-        if args[0].lower() == "all":
+        if args[0].lower() == "all" or args[1] == '*':
             for c in diskvlt.channels:
                 await execute(c)
         else:
@@ -119,4 +123,3 @@ async def admin_purge(ctx, client, diskvlt, args):
     else:
         try: await client.send_file(ctx.message.channel, "res/no-power.jpg")
         except: pass
-
