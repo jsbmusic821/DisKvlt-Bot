@@ -135,7 +135,7 @@ async def get_releases(ctx, client, args):
 
         try:
             if globals.debug: await client.say("Starting deletion timer...")
-            await asyncio.sleep(30)
+            await asyncio.sleep(140)
             count = 0
             for msg in msgs:
                 count += 1
