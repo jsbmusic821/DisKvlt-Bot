@@ -30,7 +30,7 @@ from hatespeech import check_hate_speech
 from image_search import search_for_image
 from releases import get_releases
 from bandpic import get_band_pic
-import album_cover
+from album_cover import get_album_cover
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
