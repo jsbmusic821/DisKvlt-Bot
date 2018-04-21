@@ -331,13 +331,20 @@ async def itshappening(ctx):
 @client.command(pass_context=True)
 async def cat(ctx):
     """Grabs a random cat picture"""
-    r = requests.get("https://random.cat/meow")
-    r = str(r.content)
-    r = r.replace("b'","")
-    r = r.replace("'","")
-    r = r.replace("\\","")
-    url = json.loads(r)["file"]
-    await client.say(url)
+    for i in range(0,5):
+        # site is buggy and sometimes gives bad images
+        # just loop until we get a good one
+        try:
+            r = requests.get("https://aws.random.cat/meow")
+            r = str(r.content)
+            r = r.replace("b'","")
+            r = r.replace("'","")
+            r = r.replace("\\","")
+            url = json.loads(r)["file"]
+            await client.say(url)
+            break
+        except:
+            pass
 
 # RANDOM DOG
 @client.command(pass_context=True)
@@ -654,7 +661,7 @@ async def on_message(message):
         await client.add_reaction(message, varglaugh)
 
     elif "varg" in text and ("best" in text or "much better" in text or
-            "i love" in text or "adorable" in text):
+            "i love" in text or "adorable" in text or 'good boy' in text):
         await client.add_reaction(message, blush_varg)
 
     elif "bugs" in text and not "katebugs" in text:
@@ -663,7 +670,7 @@ async def on_message(message):
     elif "23 times" in text:
         await client.add_reaction(message, varg)
 
-    elif "shut the fuck up" in text or "fuck you" in text:
+    elif "fuck you" in text:
         await client.add_reaction(message, salt)
 
     elif "shut up varg" in text or "stfu varg" in text or "shutup varg" \
