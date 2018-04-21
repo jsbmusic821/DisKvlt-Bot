@@ -30,6 +30,7 @@ from hatespeech import check_hate_speech
 from image_search import search_for_image
 from releases import get_releases
 from bandpic import get_band_pic
+import album_cover
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
@@ -92,6 +93,12 @@ async def releases(ctx, *args):
 async def band(ctx, *args):
     """Scrapes metal-archives for band pic of <band>"""
     await get_band_pic(ctx, client, args)
+
+# Metal Archives album cover scraper
+@client.command(pass_context=True)
+async def cover(ctx, *args):
+    """Scrapes metal-archives for cover of 'band - album'"""
+    await get_album_cover(ctx, client, args)
 
 # LYRIC FETCHER
 @client.command(pass_context=True)

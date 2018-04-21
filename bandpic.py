@@ -4,6 +4,9 @@ import urllib
 import re
 import asyncio
 
+async def error_message(client):
+    await client.say("error: can't find band?")
+
 async def get_band_pic(ctx, client, args):
     try:
         url = ("https://www.metal-archives.com/bands/" + "_".join(args)).lower()
