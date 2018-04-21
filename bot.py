@@ -33,6 +33,7 @@ from bandpic import get_band_pic
 from logo import get_logo
 from album_cover import get_album_cover
 from location import get_location
+from genre import get_genre
 
 client = commands.Bot(description="Hi, I'm DisKvlt's bot! Find my brain at http://github.com/mitchweaver/diskvlt-bot",\
                       command_prefix='!');
@@ -113,6 +114,13 @@ async def cover(ctx, *args):
 async def location(ctx, *args):
     """Scrapes metal-archives for location of 'band'"""
     await get_location(ctx, client, args)
+
+# Metal Archives genre scraper
+@client.command(pass_context=True)
+async def genre(ctx, *args):
+    """Scrapes metal-archives for genre of 'band'"""
+    await get_genre(ctx, client, args)
+
 
 # LYRIC FETCHER
 @client.command(pass_context=True)
