@@ -1,13 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
-TOKEN=$(cat token.txt)
+TOKEN="$(cat ./token.txt)"
 
 while true ; do
 
     git pull
 
-    killall python3.6 ||
-        pkill -9 python3.6
+    pgrep python3.6 > /dev/null && killall python3.6
     
     python3.6 bot.py $TOKEN
 
